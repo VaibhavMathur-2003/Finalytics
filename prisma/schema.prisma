@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  email        String     @unique
+  name         String     @unique
+  password     String
+  documents    Document[] @relation("UserDocuments")
+  access       Access[]   @relation("UserAccess")
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  isAdmin      Boolean    @default(false)
+}
+
+model Document {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  content     String
+  ownerId     String    @db.ObjectId
+  owner       User      @relation("UserDocuments", fields: [ownerId], references: [id])
+  access      Access[]  @relation("DocumentAccess")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Access {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String    @db.ObjectId
+  documentId  String    @db.ObjectId
+  user        User      @relation("UserAccess", fields: [userId], references: [id])
+  document    Document  @relation("DocumentAccess", fields: [documentId], references: [id])
+  permission  Permission
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([userId, documentId]) // Ensures a user has only one type of access to a document
+}
+
+enum Permission {
+  READ
+  WRITE
+}
