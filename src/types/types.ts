@@ -6,8 +6,9 @@ export interface Candle {
     close: number;
     volume: number;
     unknown: number;
+    stockKey: string;
   }
-  
+    
   export interface CandleResponse {
     status: string;
     data: {

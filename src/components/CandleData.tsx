@@ -9,6 +9,7 @@ export default function CandleData({ candles }: CandleDataProps) {
     <table>
       <thead>
         <tr>
+          <th>Stock Key</th>
           <th>Timestamp</th>
           <th>Open</th>
           <th>High</th>
@@ -19,7 +20,8 @@ export default function CandleData({ candles }: CandleDataProps) {
       </thead>
       <tbody>
         {candles.map((candle) => (
-          <tr key={candle.timestamp}>
+          <tr key={`${candle.stockKey}-${candle.timestamp}`}>
+            <td>{candle.stockKey}</td>
             <td>{candle.timestamp}</td>
             <td>{candle.open}</td>
             <td>{candle.high}</td>
