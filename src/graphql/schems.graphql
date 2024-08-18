@@ -1,0 +1,17 @@
+type Candle {
+  timestamp: String!
+  open: Float!
+  high: Float!
+  low: Float!
+  close: Float!
+  volume: Int!
+  unknown: Int!
+}
+
+type CandleData {
+  candles: [Candle!]!
+}
+
+type Query {
+  getCandles: CandleData!
+}
