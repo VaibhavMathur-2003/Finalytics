@@ -1,4 +1,4 @@
-import { CandleResponse, Candle } from './types';
+import { CandleResponse, Candle } from '@/types/types';
 
 const BASE_URL = 'https://api.upstox.com/v2/historical-candle';
 
