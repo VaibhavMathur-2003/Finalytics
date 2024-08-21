@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useMutation, gql } from '@apollo/client'
+import { useRouter } from 'next/navigation'
 
 const CREATE_USER = gql`
   mutation CreateUser($email: String!, $password: String!, $name: String) {
@@ -17,6 +18,8 @@ export default function CreateUser() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
+  const router = useRouter();
+
 
   const [createUser, { data, loading, error }] = useMutation(CREATE_USER)
 
@@ -27,7 +30,9 @@ export default function CreateUser() {
 
   if (loading) return <p>Submitting...</p>
   if (error) return <p>Error: {error.message}</p>
-  if (data) return <p>User created successfully!</p>
+  if (data) {
+    router.push("/signin");
+  }
 
   return (
     <form onSubmit={handleSubmit}>

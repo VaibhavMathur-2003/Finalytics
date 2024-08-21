@@ -14,7 +14,7 @@ async function hashPassword(password: string): Promise<string> {
 }
 
 async function verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
-  const hashedInput = await hashPassword(password);
+  const hashedInput = password;
   return hashedInput === hashedPassword;
 }
 
