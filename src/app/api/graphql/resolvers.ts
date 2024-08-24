@@ -26,18 +26,25 @@ export const resolvers = {
     deleteWishlist: (_: any, { id }: { id: string }) => 
       prisma.wishlist.delete({ where: { id } }),
 
-    createStock: (_: any, { symbol, name }: { symbol: string; name: string }) => 
-      prisma.stock.create({ data: { symbol, name } }),
     updateStock: (_: any, { id, name }: { id: string; name?: string }) => 
       prisma.stock.update({ where: { id }, data: { name } }),
     deleteStock: (_: any, { id }: { id: string }) => 
       prisma.stock.delete({ where: { id } }),
 
-    addStockToWishlist: (_: any, { wishlistId, stockId }: { wishlistId: string; stockId: string }) => 
-      prisma.wishlist.update({
+    createStock: async (_: any, { symbol, name }: { symbol: string; name: string }) => {
+      let stock = await prisma.stock.findUnique({ where: { symbol } });
+      if (!stock) {
+        stock = await prisma.stock.create({ data: { symbol, name } });
+      }
+      return stock;
+    },
+    addStockToWishlist: async (_: any, { wishlistId, stockId }: { wishlistId: string; stockId: string }) => {
+      return prisma.wishlist.update({
         where: { id: wishlistId },
         data: { stocks: { connect: { id: stockId } } },
-      }),
+        include: { stocks: true },
+      });
+    },
     removeStockFromWishlist: (_: any, { wishlistId, stockId }: { wishlistId: string; stockId: string }) => 
       prisma.wishlist.update({
         where: { id: wishlistId },

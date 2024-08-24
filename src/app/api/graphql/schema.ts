@@ -40,10 +40,10 @@ export const typeDefs = gql`
     updateWishlist(id: ID!, name: String): Wishlist!
     deleteWishlist(id: ID!): Wishlist
 
-    createStock(symbol: String!, name: String!): Stock!
     updateStock(id: ID!, name: String): Stock!
     deleteStock(id: ID!): Stock
 
+    createStock(symbol: String!, name: String!): Stock!
     addStockToWishlist(wishlistId: ID!, stockId: ID!): Wishlist!
     removeStockFromWishlist(wishlistId: ID!, stockId: ID!): Wishlist!
   }

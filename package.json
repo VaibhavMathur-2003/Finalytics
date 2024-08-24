@@ -16,8 +16,10 @@
     "@graphql-tools/schema": "^10.0.6",
     "@graphql-tools/utils": "^10.5.4",
     "@prisma/client": "^5.18.0",
+    "@radix-ui/react-slot": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "framer-motion": "^11.3.29",
     "graphql": "^16.9.0",
     "graphql-request": "^7.1.0",
     "graphql-yoga": "^5.7.0",
@@ -26,6 +28,7 @@
     "next-auth": "^5.0.0-beta.20",
     "react": "^18",
     "react-dom": "^18",
+    "recharts": "^2.12.7",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7"
   },

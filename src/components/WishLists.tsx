@@ -2,12 +2,21 @@
 
 import { useState } from 'react'
 import { useMutation, useQuery, gql } from '@apollo/client'
+import stocksData from '../../public/assets/stocks.json'
 
 const CREATE_WISHLIST = gql`
   mutation CreateWishlist($name: String!, $userId: ID!) {
     createWishlist(name: $name, userId: $userId) {
       id
       name
+    }
+  }
+`
+
+const CREATE_STOCK = gql`
+  mutation CreateStock($symbol: String!, $name: String!) {
+    createStock(symbol: $symbol, name: $name) {
+      id
     }
   }
 `
@@ -43,16 +52,6 @@ const GET_USER_WISHLISTS = gql`
   }
 `
 
-const GET_STOCKS = gql`
-  query GetStocks {
-    stocks {
-      id
-      symbol
-      name
-    }
-  }
-`
-
 export default function WishlistManager({ userId }: { userId: string }) {
   const [wishlistName, setWishlistName] = useState('')
   const [selectedWishlist, setSelectedWishlist] = useState('')
@@ -62,8 +61,6 @@ export default function WishlistManager({ userId }: { userId: string }) {
     variables: { userId },
   })
 
-  const { data: stocksData } = useQuery(GET_STOCKS)
-
   const [createWishlist] = useMutation(CREATE_WISHLIST, {
     onCompleted: () => {
       refetchWishlists()
@@ -71,12 +68,8 @@ export default function WishlistManager({ userId }: { userId: string }) {
     },
   })
 
-  const [addStockToWishlist] = useMutation(ADD_STOCK_TO_WISHLIST, {
-    onCompleted: () => {
-      refetchWishlists()
-      setSelectedStock('')
-    },
-  })
+  const [createStock] = useMutation(CREATE_STOCK)
+  const [addStockToWishlist] = useMutation(ADD_STOCK_TO_WISHLIST)
 
   const handleCreateWishlist = (e: React.FormEvent) => {
     e.preventDefault()
@@ -85,12 +78,29 @@ export default function WishlistManager({ userId }: { userId: string }) {
     }
   }
 
-  const handleAddStock = (e: React.FormEvent) => {
+  const handleAddStock = async (e: React.FormEvent) => {
     e.preventDefault()
     if (selectedWishlist && selectedStock) {
-      addStockToWishlist({
-        variables: { wishlistId: selectedWishlist, stockId: selectedStock },
-      })
+      const stock = stocksData.find(s => s.id === selectedStock)
+      if (stock) {
+        const { data } = await createStock({
+          variables: { 
+            symbol: stock.symbol, 
+            name: stock.name 
+          },
+        })
+
+        if (data?.createStock?.id) {
+          await addStockToWishlist({
+            variables: { 
+              wishlistId: selectedWishlist, 
+              stockId: data.createStock.id 
+            },
+          })
+        }
+        refetchWishlists()
+        setSelectedStock('')
+      }
     }
   }
 
@@ -127,7 +137,7 @@ export default function WishlistManager({ userId }: { userId: string }) {
           required
         >
           <option value="">Select a Stock</option>
-          {stocksData?.stocks.map((stock: { id: string; symbol: string; name: string }) => (
+          {stocksData.map((stock: { id: string; symbol: string; name: string }) => (
             <option key={stock.id} value={stock.id}>
               {stock.symbol} - {stock.name}
             </option>
