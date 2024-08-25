@@ -1,6 +1,9 @@
 import { auth } from "@/auth";
+import WishlistsPart from "@/components/carous";
 import WishlistManager from "@/components/WishLists";
 import { redirect } from 'next/navigation'
+
+
 
 const Page = async () => {
     const session = await auth();
@@ -9,10 +12,11 @@ const Page = async () => {
     }
     const user=session.user.id;
     return (
-        <div>
-            <WishlistManager userId={user}/>
-        </div>
+            <WishlistsPart/>
     );
 }
 
 export default Page;
+
+
+

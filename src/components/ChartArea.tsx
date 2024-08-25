@@ -347,22 +347,22 @@ function PiechartcustomChart(props: any) {
       <ChartContainer
         config={{
           visitors: {
-            label: "Visitors",
+            label: "Stocks",
           },
           chrome: {
-            label: "Chrome",
+            label: "IRFC",
             color: "hsl(var(--chart-1))",
           },
           safari: {
-            label: "Safari",
+            label: "Infosys",
             color: "hsl(var(--chart-2))",
           },
           firefox: {
-            label: "Firefox",
+            label: "Zomato",
             color: "hsl(var(--chart-3))",
           },
           edge: {
-            label: "Edge",
+            label: "Reliance",
             color: "hsl(var(--chart-4))",
           },
           other: {
@@ -378,14 +378,14 @@ function PiechartcustomChart(props: any) {
           />
           <Pie
             data={[
-              { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-              { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+              { browser: "IRFC", visitors: 275, fill: "var(--color-chrome)" },
+              { browser: "Infosys", visitors: 200, fill: "var(--color-safari)" },
               {
-                browser: "firefox",
+                browser: "Zomato",
                 visitors: 187,
                 fill: "var(--color-firefox)",
               },
-              { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+              { browser: "Reliance", visitors: 173, fill: "var(--color-edge)" },
               { browser: "other", visitors: 90, fill: "var(--color-other)" },
             ]}
             dataKey="visitors"
