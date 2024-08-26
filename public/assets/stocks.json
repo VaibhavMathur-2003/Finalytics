@@ -1,5 +1,7 @@
 [
-    { "id": "1", "symbol": "AAPL", "name": "Apple Inc." },
-    { "id": "2", "symbol": "GOOGL", "name": "Alphabet Inc." },
-    { "id": "3", "symbol": "MSFT", "name": "Microsoft Corporation" }
+  { "id": "1", "symbol": "NSE_EQ|INE848E01016", "name": "TCS" },
+  { "id": "2", "symbol": "NSE_EQ|INE009A01021", "name": "Infosys" },
+  { "id": "3", "symbol": "NSE_EQ|INE062A01020", "name": "HDFC Bank" }
   ]
+
+  

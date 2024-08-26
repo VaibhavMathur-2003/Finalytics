@@ -12,7 +12,7 @@ const Page = async () => {
     }
     const user=session.user.id;
     return (
-            <WishlistsPart/>
+            <WishlistsPart userId={user}/>
     );
 }
 
