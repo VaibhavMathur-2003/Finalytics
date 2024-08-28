@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "./ui/input";
-import { Calendar } from "@/components/ui/calendar";
+import { Calendar } from "@/components/ui/smallcalendar";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useState } from "react";
 import * as React from "react";
@@ -301,9 +301,8 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                             <CardContent className="flex aspect-square items-center justify-center p-6">
                               <div className="text-center">
                                 <span className="text-xl font-semibold">
-                                  {stock.symbol}
+                                  {stock.name}
                                 </span>
-                                <p className="text-sm">{stock.name}</p>
                               </div>
                             </CardContent>
                           </Card>

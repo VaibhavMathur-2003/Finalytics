@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -21,28 +20,8 @@ import {
 } from "./ui/carousel";
 import { Card, CardContent } from "./ui/card";
 
-export function DrawerDemo({ wishlistId }) {
-  const [stocks, setStocks] = useState([]);
 
-  useEffect(() => {
-    // Fetch stocks for the selected wishlist
-    const fetchStocks = async () => {
-      try {
-        const response = await fetch(`/api/wishlist/${wishlistId}/stocks`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch stocks');
-        }
-        const data = await response.json();
-        setStocks(data);
-      } catch (error) {
-        console.error('Error fetching stocks:', error);
-      }
-    };
-
-    if (wishlistId) {
-      fetchStocks();
-    }
-  }, [wishlistId]);
+export function DrawerDemo() {
 
   return (
     <Drawer>
@@ -52,8 +31,8 @@ export function DrawerDemo({ wishlistId }) {
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm">
           <DrawerHeader>
-            <DrawerTitle>Wishlist Stocks</DrawerTitle>
-            <DrawerDescription>Stocks in your selected wishlist</DrawerDescription>
+            <DrawerTitle>Move Goal</DrawerTitle>
+            <DrawerDescription>Set your daily activity goal.</DrawerDescription>
           </DrawerHeader>
           <div className="p-4 pb-0">
             <div className="flex items-center justify-center space-x-2">
@@ -64,20 +43,17 @@ export function DrawerDemo({ wishlistId }) {
                 className="w-full max-w-sm"
               >
                 <CarouselContent>
-                  {stocks.map((stock, index) => (
+                  {Array.from({ length: 5 }).map((_, index) => (
                     <CarouselItem
-                      key={stock.id}
+                      key={index}
                       className="md:basis-1/2 lg:basis-1/3"
                     >
                       <div className="p-1">
                         <Card>
                           <CardContent className="flex aspect-square items-center justify-center p-6">
-                            <div className="text-center">
-                              <span className="text-xl font-semibold">
-                                {stock.symbol}
-                              </span>
-                              <p className="text-sm">{stock.name}</p>
-                            </div>
+                            <span className="text-3xl font-semibold">
+                              {index + 1}
+                            </span>
                           </CardContent>
                         </Card>
                       </div>
@@ -90,8 +66,9 @@ export function DrawerDemo({ wishlistId }) {
             </div>
           </div>
           <DrawerFooter>
+            <Button>Submit</Button>
             <DrawerClose asChild>
-              <Button variant="outline">Close</Button>
+              <Button variant="outline">Cancel</Button>
             </DrawerClose>
           </DrawerFooter>
         </div>
