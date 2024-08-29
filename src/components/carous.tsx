@@ -39,8 +39,8 @@ const CREATE_WISHLIST = gql`
 `;
 
 const CREATE_STOCK = gql`
-  mutation CreateStock($symbol: String!, $name: String!) {
-    createStock(symbol: $symbol, name: $name) {
+  mutation CreateStock($symbol: String!, $name: String!, $quantity: Float!) {
+    createStock(symbol: $symbol, name: $name, quantity: $quantity) {
       id
     }
   }
@@ -55,6 +55,7 @@ const ADD_STOCK_TO_WISHLIST = gql`
         id
         symbol
         name
+        quantity
       }
     }
   }
@@ -71,6 +72,7 @@ const GET_USER_WISHLISTS = gql`
           id
           symbol
           name
+          quantity
         }
       }
     }
@@ -82,9 +84,15 @@ export default function WishlistsPart({ userId }: { userId: string }) {
   const [selectedWishlist, setSelectedWishlist] = useState<{
     id: string;
     name: string;
-    stocks: Array<{ id: string; symbol: string; name: string }>;
+    stocks: Array<{
+      id: string;
+      symbol: string;
+      name: string;
+      quantity: number;
+    }>;
   } | null>(null);
   const [selectedStock, setSelectedStock] = useState("");
+  const [stockQuantity, setStockQuantity] = useState(1);
 
   const { data: userData, refetch: refetchWishlists } = useQuery(
     GET_USER_WISHLISTS,
@@ -119,6 +127,7 @@ export default function WishlistsPart({ userId }: { userId: string }) {
           variables: {
             symbol: stock.symbol,
             name: stock.name,
+            quantity: stockQuantity,
           },
         });
 
@@ -189,7 +198,12 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                 (wishlist: {
                   id: string;
                   name: string;
-                  stocks: Array<{ id: string; symbol: string; name: string }>;
+                  stocks: Array<{
+                    id: string;
+                    symbol: string;
+                    name: string;
+                    quantity: number;
+                  }>;
                 }) => (
                   <Card
                     key={wishlist.id}
@@ -274,6 +288,12 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                     )
                   )}
                 </select>
+                <input
+                  type="number"
+                  value={stockQuantity}
+                  onChange={(e) => setStockQuantity(Number(e.target.value))}
+                />
+
                 <Button
                   type="submit"
                   className="bg-white text-black font-bold text-2xl p-4 rounded-full shadow-lg hover:bg-gray-100 transition z-20"

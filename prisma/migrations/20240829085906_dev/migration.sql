@@ -23,6 +23,7 @@ CREATE TABLE "Stock" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "symbol" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "quantity" REAL NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
 );

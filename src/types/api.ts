@@ -13,7 +13,7 @@ function getDateRange(): { startDate: string; endDate: string } {
   };
 }
 
-async function fetchCandlesForStock(stockKey: string): Promise<Candle[]> {
+export async function fetchCandlesForStock(stockKey: string, quantity: number): Promise<Candle[]> {
   const { startDate, endDate } = getDateRange();
   const url = `${BASE_URL}/${encodeURIComponent(stockKey)}/day/${endDate}/${startDate}`;
 
@@ -24,16 +24,21 @@ async function fetchCandlesForStock(stockKey: string): Promise<Candle[]> {
     throw new Error(`Failed to fetch candle data for ${stockKey}`);
   }
 
-  return data.data.candles.map(([timestamp, open, high, low, close, volume, unknown]) => ({
-    timestamp,
-    open,
-    high,
-    low,
-    close,
-    volume,
-    unknown,
-    stockKey,
-  }));
+  return data.data.candles.map(([timestamp, open, high, low, close, volume, unknown]) => {
+    const date = timestamp.split('T')[0];
+    const profit = (close - open) * quantity;  // Calculate actual profit by multiplying with quantity
+    return {
+      timestamp: date,
+      open,
+      high,
+      low,
+      close,
+      volume,
+      unknown,
+      stockKey,
+      profit,  // Actual profit
+    };
+  });
 }
 
 export async function fetchCandles(stockKeys: string[]): Promise<Candle[]> {

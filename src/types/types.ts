@@ -7,6 +7,7 @@ export interface Candle {
     volume: number;
     unknown: number;
     stockKey: string;
+    profit: number
   }
     
   export interface CandleResponse {
