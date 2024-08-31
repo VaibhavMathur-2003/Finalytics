@@ -10,6 +10,15 @@ import { DualRangeSlider } from "@/components/ui/dualrangeslider";
 import { PieCharts } from "@/components/ui/piechart";
 import { AreaCharts } from "@/components/ui/areaChart";
 import { Topers } from "@/components/ui/topers";
+import { addDays, format } from "date-fns";
+import { DateRange } from "react-day-picker";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const GET_WISHLIST = gql`
   query GetWishlist($id: ID!) {
@@ -30,8 +39,12 @@ export default function WishlistData() {
   const params = useParams();
   const id = params.id as string;
   const [stockData, setStockData] = useState<Candle[]>([]);
+  const [filteredStockData, setFilteredStockData] = useState<Candle[]>([]);
   const [loading, setLoading] = useState(true);
-  const [values, setValues] = useState([0, 100]);
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: new Date(2022, 0, 20),
+    to: addDays(new Date(2022, 0, 20), 20),
+  });
 
   const { data: wishlistData, loading: wishlistLoading } = useQuery(
     GET_WISHLIST,
@@ -40,6 +53,7 @@ export default function WishlistData() {
       skip: !id,
     }
   );
+
   const fetchWishlistData = async (wishlist: any) => {
     try {
       setLoading(true);
@@ -65,15 +79,24 @@ export default function WishlistData() {
     }
   }, [wishlistData, wishlistLoading]);
 
-  if (loading || wishlistLoading) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    if (stockData.length > 0 && date?.from && date?.to) {
+      const filteredData = stockData.filter(
+        (candle) =>
+          new Date(candle.timestamp) >= date.from &&
+          new Date(candle.timestamp) <= date.to
+      );
+      setFilteredStockData(filteredData);
+    } else {
+      setFilteredStockData(stockData);
+    }
+  }, [stockData, date]);
 
   if (loading || wishlistLoading) {
     return <div>Loading...</div>;
   }
 
-  const totalProfit = stockData.reduce(
+  const totalProfit = filteredStockData.reduce(
     (acc, candle) => acc + (candle.close - candle.open),
     0
   );
@@ -99,7 +122,7 @@ export default function WishlistData() {
     const profitMap: { [key: string]: number } = {};
 
     data.forEach((item) => {
-      const profit = item.profit;
+      const profit = item.close - item.open; // Assuming this calculates profit
 
       if (profitMap[item.stockKey]) {
         profitMap[item.stockKey] += profit;
@@ -125,6 +148,7 @@ export default function WishlistData() {
         negativeProfits.push(stockProfit);
       }
     });
+
     positiveProfits.sort((a, b) => b.profit - a.profit);
     negativeProfits.sort((a, b) => b.profit - a.profit);
 
@@ -139,15 +163,46 @@ export default function WishlistData() {
         </h1>
         <div className="flex">
           <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-lg w-full flex flex-col justify-center p-8">
-            <DualRangeSlider
-              className=""
-              label={(value) => value}
-              value={values}
-              onValueChange={setValues}
-              min={0}
-              max={100}
-              step={1}
-            />
+            <div className="flex items-center w-full justify-center">
+              <Popover>
+                <PopoverTrigger asChild>
+                <Button
+                    id="date"
+                    variant={"outline"}
+                    className={cn(
+                      "w-[300px] justify-center font-normal text-lg bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:text-blue-200",
+                      !date && "text-muted-background"
+                    )}
+                    
+                  >
+                    {date?.from ? (
+                      date.to ? (
+                        <>
+                          {format(date.from, "LLL dd, y")} -{" "}
+                          {format(date.to, "LLL dd, y")}
+                        </>
+                      ) : (
+                        format(date.from, "LLL dd, y")
+                      )
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 " align="start">
+                  <Calendar
+                    initialFocus
+                    mode="range"
+                    defaultMonth={date?.from}
+                    selected={date}
+                    onSelect={setDate}
+                    numberOfMonths={1}
+                    
+                    className="bg-gray-900 text-white rounded-lg shadow-md"
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
           <div className="w-3/4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-6 rounded-xl shadow-lg mx-5">
             <div className="flex justify-between items-center mb-4">
@@ -169,36 +224,22 @@ export default function WishlistData() {
               <p>{new Date().getFullYear()}</p>
             </div>
           </div>
-          {/* <div className="w-3/4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-6 rounded-xl shadow-lg mx-5">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold">Profit Card</h2>
-              <span className="text-lg">💳</span>
-            </div>
-            <div className="mb-4">
-              <p className="text-sm">Total Profit</p>
-              <p className="text-3xl font-bold">{totalProfit.toFixed(2)} USD</p>
-            </div>
-            <div className="flex justify-between items-center text-sm">
-              <p>Vaibhav Mathur</p>
-              <p>{new Date().getFullYear()}</p>
-            </div>
-          </div> */}
         </div>
         <div className="my-8">
-        <AreaCharts stockData={stockData}/>
+          <AreaCharts stockData={filteredStockData} />
         </div>
         <div className="flex justify-between">
           <PieCharts
-            profit={pieData(stockData).positiveProfits}
-            loss={pieData(stockData).negativeProfits}
+            profit={pieData(filteredStockData).positiveProfits}
+            loss={pieData(filteredStockData).negativeProfits}
           />
           <div className="flex">
             <Topers
-              stockData={pieData(stockData).positiveProfits.slice(0, 5)}
+              stockData={pieData(filteredStockData).positiveProfits.slice(0, 5)}
               title="Gainers"
             />
             <Topers
-              stockData={pieData(stockData).negativeProfits.slice(-5)}
+              stockData={pieData(filteredStockData).negativeProfits.slice(-5)}
               title="Losers"
             />
           </div>

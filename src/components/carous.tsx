@@ -78,6 +78,13 @@ const GET_USER_WISHLISTS = gql`
     }
   }
 `;
+const DELETE_WISHLIST = gql`
+  mutation DeleteWishlist($id: ID!) {
+    deleteWishlist(id: $id) {
+      id
+    }
+  }
+`;
 
 export default function WishlistsPart({ userId }: { userId: string }) {
   const [wishlistName, setWishlistName] = useState("");
@@ -100,7 +107,14 @@ export default function WishlistsPart({ userId }: { userId: string }) {
       variables: { userId },
     }
   );
-
+  const [deleteWishlist] = useMutation(DELETE_WISHLIST, {
+    onCompleted: () => {
+      refetchWishlists();
+    },
+  });
+  const handleDeleteWishlist = (wishlistId: string) => {
+    deleteWishlist({ variables: { id: wishlistId } });
+  };
   const [createWishlist] = useMutation(CREATE_WISHLIST, {
     onCompleted: () => {
       refetchWishlists();
@@ -187,35 +201,35 @@ export default function WishlistsPart({ userId }: { userId: string }) {
             />
             <Button
               type="submit"
-              className="bg-white text-black font-bold text-2xl p-4 rounded-full shadow-lg hover:bg-gray-100 transition z-20"
+              className="bg-white text-black font-bold text-2xl p-4 rounded-xl shadow-lg hover:bg-gray-100 transition z-20"
             >
               +
             </Button>
           </form>
-          <DrawerTrigger asChild>
-            <div className="grid grid-cols-1 gap-6  max-w-4xl mx-auto overflow-y-scroll max-h-[500px] no-scrollbar">
-              {userData?.user?.wishlists.map(
-                (wishlist: {
+          <div className="grid grid-cols-1 gap-6  max-w-4xl mx-auto overflow-y-scroll max-h-[500px] no-scrollbar">
+            {userData?.user?.wishlists.map(
+              (wishlist: {
+                id: string;
+                name: string;
+                stocks: Array<{
                   id: string;
+                  symbol: string;
                   name: string;
-                  stocks: Array<{
-                    id: string;
-                    symbol: string;
-                    name: string;
-                    quantity: number;
-                  }>;
-                }) => (
-                  <Card
-                    key={wishlist.id}
-                    className="relative overflow-hidden rounded-xl border-4 border-blue-500 shadow-lg transition-all hover:shadow-2xl hover:border-red-600 transform hover:-translate-y-1 cursor-pointer"
-                    onClick={() => setSelectedWishlist(wishlist)}
-                  >
-                    <CardContent className="p-4 flex flex-col gap-2 bg-white">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-semibold text-gray-800">
-                          {wishlist.name}
-                        </h3>
-                        <div className="flex items-center gap-2">
+                  quantity: number;
+                }>;
+              }) => (
+                <Card
+                  key={wishlist.id}
+                  className="relative overflow-hidden rounded-xl border-4 border-blue-500 shadow-lg transition-all hover:shadow-2xl hover:border-red-600 transform hover:-translate-y-1 cursor-pointer"
+                  onClick={() => setSelectedWishlist(wishlist)}
+                >
+                  <CardContent className="p-4  gap-2 justify-center bg-white">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-semibold text-gray-800">
+                        {wishlist.name}
+                      </h3>
+                      <div className="flex items-center gap-2">
+                        <DrawerTrigger asChild>
                           <Button
                             variant="ghost"
                             size="icon"
@@ -229,39 +243,41 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                               Edit {wishlist.name}
                             </span>
                           </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 hover:bg-gray-100 transition"
-                          >
-                            <TrashIcon
-                              className="w-4 h-4 text-gray-600"
-                              aria-hidden="true"
-                            />
-                            <span className="sr-only">
-                              Delete {wishlist.name}
-                            </span>
-                          </Button>
-                        </div>
+                        </DrawerTrigger>
+
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 hover:bg-gray-100 transition"
+                          onClick={() => handleDeleteWishlist(wishlist.id)}
+                        >
+                          <TrashIcon
+                            className="w-4 h-4 text-gray-600"
+                            aria-hidden="true"
+                          />
+                          <span className="sr-only">
+                            Delete {wishlist.name}
+                          </span>
+                        </Button>
                       </div>
-                      {/* <p className="text-gray-600">{wishlist.description}</p> */}
-                      <div className="flex items-center justify-between text-sm font-medium text-gray-600">
-                        {/* <span>Progress: {wishlist.progress}%</span> */}
-                        <span>
-                          {/* ${wishlist.currentAmount.toLocaleString()} / $
+                    </div>
+                    {/* <p className="text-gray-600">{wishlist.description}</p> */}
+                    <div className="flex items-center justify-between text-sm font-medium text-gray-600">
+                      {/* <span>Progress: {wishlist.progress}%</span> */}
+                      <span>
+                        {/* ${wishlist.currentAmount.toLocaleString()} / $
                     {wishlist.targetAmount.toLocaleString()} */}
-                        </span>
-                      </div>
-                      {/* <Progress
+                      </span>
+                    </div>
+                    {/* <Progress
                   value={wishlist.progress}
                   className="w-full bg-green-500 rounded-full"
                 /> */}
-                    </CardContent>
-                  </Card>
-                )
-              )}
-            </div>
-          </DrawerTrigger>
+                  </CardContent>
+                </Card>
+              )
+            )}
+          </div>
         </div>
         <DrawerContent>
           <div className="mx-auto w-full max-w-2xl">
@@ -296,7 +312,7 @@ export default function WishlistsPart({ userId }: { userId: string }) {
 
                 <Button
                   type="submit"
-                  className="bg-white text-black font-bold text-2xl p-4 rounded-full shadow-lg hover:bg-gray-100 transition z-20"
+                  className="bg-white text-black font-bold text-2xl p-4 rounded-xl border border-black shadow-lg hover:bg-gray-100 transition z-20"
                 >
                   +
                 </Button>

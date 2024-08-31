@@ -1,50 +1,65 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import * as SliderPrimitive from '@radix-ui/react-slider';
+import * as React from "react";
+import { addDays, format } from "date-fns";
+import { DateRange } from "react-day-picker";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
-interface DualRangeSliderProps extends React.ComponentProps<typeof SliderPrimitive.Root> {
-  labelPosition?: 'top' | 'bottom';
-  label?: (value: number | undefined) => React.ReactNode;
-}
+export function DualRangeSlider({
+  className,
+}: React.HTMLAttributes<HTMLDivElement>) {
 
-const DualRangeSlider = React.forwardRef<
-  React.ElementRef<typeof SliderPrimitive.Root>,
-  DualRangeSliderProps
->(({ className, label, labelPosition = 'top', ...props }, ref) => {
-  const initialValue = Array.isArray(props.value) ? props.value : [props.min, props.max];
+  
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: new Date(2022, 0, 20),
+    to: addDays(new Date(2022, 0, 20), 20),
+  });
 
   return (
-    <SliderPrimitive.Root
-      ref={ref}
-      className={cn('relative flex w-full touch-none select-none items-center', className)}
-      {...props}
-    >
-      <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-primary">
-        <SliderPrimitive.Range className="absolute h-full bg-secondary" />
-      </SliderPrimitive.Track>
-      {initialValue.map((value, index) => (
-        <React.Fragment key={index}>
-          <SliderPrimitive.Thumb className="relative block h-4 w-4 rounded-full border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
-            {label && (
-              <span
-                className={cn(
-                  'absolute flex w-full justify-center',
-                  labelPosition === 'top' && '-top-7',
-                  labelPosition === 'bottom' && 'top-4',
-                )}
-              >
-                {label(value)}
-              </span>
+    <div className={cn("grid gap-2", className)}>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            id="date"
+            variant={"outline"}
+            className={cn(
+              "w-[300px] justify-start text-left font-normal",
+              !date && "text-muted-foreground"
             )}
-          </SliderPrimitive.Thumb>
-        </React.Fragment>
-      ))}
-    </SliderPrimitive.Root>
+          >
+            {date?.from ? (
+              date.to ? (
+                <>
+                  {format(date.from, "LLL dd, y")} -{" "}
+                  {format(date.to, "LLL dd, y")}
+                </>
+              ) : (
+                format(date.from, "LLL dd, y")
+              )
+            ) : (
+              <span>Pick a date</span>
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            initialFocus
+            mode="range"
+            defaultMonth={date?.from}
+            selected={date}
+            onSelect={setDate}
+            numberOfMonths={1}
+          />
+        </PopoverContent>
+      </Popover>
+    </div>
   );
-});
-DualRangeSlider.displayName = 'DualRangeSlider';
-
-export { DualRangeSlider };
+}
