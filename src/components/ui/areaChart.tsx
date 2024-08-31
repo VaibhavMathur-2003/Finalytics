@@ -105,7 +105,7 @@ export function AreaCharts({ stockData }: { stockData: Candle[] }) {
           config={chartConfig}
           className="aspect-auto h-[250px] w-full"
         >
-          <AreaChart data={filteredData}>
+          <AreaChart data={filteredData.reverse()}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="timestamp"
@@ -120,7 +120,7 @@ export function AreaCharts({ stockData }: { stockData: Candle[] }) {
                   day: "numeric",
                 });
               }}
-              tick={{ stroke: "#ffffff" }} // Replace with your desired color
+              tick={{ stroke: "#ffffff" }}
 
             />
             <ChartTooltip

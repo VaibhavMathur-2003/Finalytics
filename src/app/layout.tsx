@@ -32,7 +32,7 @@ export default function RootLayout({
         <nav className="fixed inset-x-0 top-0 z-20 bg-white z-50 shadow-sm dark:bg-gray-950/90 border-b-2 border-solid border-black">
         <div className="w-full max-w-7xl mx-auto px-4">
           <div className="flex justify-between h-14 items-center">
-            <Link href="#" className="flex items-center" prefetch={false}>
+            <Link href="/" className="flex items-center" prefetch={false}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"

@@ -42,8 +42,8 @@ export default function WishlistData() {
   const [filteredStockData, setFilteredStockData] = useState<Candle[]>([]);
   const [loading, setLoading] = useState(true);
   const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
+    from: new Date(new Date().setMonth(new Date().getMonth() - 1)), 
+  to: new Date(),
   });
 
   const { data: wishlistData, loading: wishlistLoading } = useQuery(
@@ -83,14 +83,15 @@ export default function WishlistData() {
     if (stockData.length > 0 && date?.from && date?.to) {
       const filteredData = stockData.filter(
         (candle) =>
-          new Date(candle.timestamp) >= date.from &&
-          new Date(candle.timestamp) <= date.to
+          new Date(candle.timestamp) >= (date.from ?? new Date(0)) &&
+          new Date(candle.timestamp) <= (date.to ?? new Date())
       );
       setFilteredStockData(filteredData);
     } else {
       setFilteredStockData(stockData);
     }
   }, [stockData, date]);
+  
 
   if (loading || wishlistLoading) {
     return <div>Loading...</div>;

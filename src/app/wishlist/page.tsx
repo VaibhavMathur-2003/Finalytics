@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
 import WishlistsPart from "@/components/carous";
-import WishlistManager from "@/components/WishLists";
 import { redirect } from 'next/navigation'
 
 

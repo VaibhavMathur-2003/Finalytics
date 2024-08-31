@@ -26,7 +26,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
-import { DrawerDemo } from "./Drawer";
 import Link from "next/link";
 
 const CREATE_WISHLIST = gql`
@@ -86,6 +85,20 @@ const DELETE_WISHLIST = gql`
   }
 `;
 
+const REMOVE_STOCK_FROM_WISHLIST = gql`
+  mutation RemoveStockFromWishlist($wishlistId: ID!, $stockId: ID!) {
+    removeStockFromWishlist(wishlistId: $wishlistId, stockId: $stockId) {
+      id
+      stocks {
+        id
+        symbol
+        name
+        quantity
+      }
+    }
+  }
+`;
+
 export default function WishlistsPart({ userId }: { userId: string }) {
   const [wishlistName, setWishlistName] = useState("");
   const [selectedWishlist, setSelectedWishlist] = useState<{
@@ -123,7 +136,12 @@ export default function WishlistsPart({ userId }: { userId: string }) {
   });
 
   const [createStock] = useMutation(CREATE_STOCK);
-  const [addStockToWishlist] = useMutation(ADD_STOCK_TO_WISHLIST);
+  const [addStockToWishlist] = useMutation(ADD_STOCK_TO_WISHLIST, {
+    onCompleted: (data) => {
+      setSelectedWishlist(data.addStockToWishlist);
+      refetchWishlists();
+    },
+  });
 
   const handleCreateWishlist = (e: React.FormEvent) => {
     e.preventDefault();
@@ -157,6 +175,18 @@ export default function WishlistsPart({ userId }: { userId: string }) {
         setSelectedStock("");
       }
     }
+  };
+  const [removeStockFromWishlist] = useMutation(REMOVE_STOCK_FROM_WISHLIST, {
+    onCompleted: (data) => {
+      setSelectedWishlist(data.removeStockFromWishlist);
+      refetchWishlists();
+    },
+  });
+
+  const handleRemoveStock = async (wishlistId: string, stockId: string) => {
+    await removeStockFromWishlist({
+      variables: { wishlistId, stockId },
+    });
   };
 
   return (
@@ -218,18 +248,18 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                   quantity: number;
                 }>;
               }) => (
-                <Card
-                  key={wishlist.id}
-                  className="relative overflow-hidden rounded-xl border-4 border-blue-500 shadow-lg transition-all hover:shadow-2xl hover:border-red-600 transform hover:-translate-y-1 cursor-pointer"
-                  onClick={() => setSelectedWishlist(wishlist)}
-                >
-                  <CardContent className="p-4  gap-2 justify-center bg-white">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-semibold text-gray-800">
-                        {wishlist.name}
-                      </h3>
-                      <div className="flex items-center gap-2">
-                        <DrawerTrigger asChild>
+                <DrawerTrigger key={wishlist.id} asChild>
+                  <Card
+                    key={wishlist.id}
+                    className="relative overflow-hidden rounded-xl border-4 border-blue-500 shadow-lg transition-all hover:shadow-2xl hover:border-red-600 transform hover:-translate-y-1 cursor-pointer"
+                    onClick={() => setSelectedWishlist(wishlist)}
+                  >
+                    <CardContent className="p-4  gap-2 justify-center bg-white">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-lg font-semibold text-gray-800">
+                          {wishlist.name}
+                        </h3>
+                        <div className="flex items-center gap-2">
                           <Button
                             variant="ghost"
                             size="icon"
@@ -243,38 +273,41 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                               Edit {wishlist.name}
                             </span>
                           </Button>
-                        </DrawerTrigger>
 
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 hover:bg-gray-100 transition"
-                          onClick={() => handleDeleteWishlist(wishlist.id)}
-                        >
-                          <TrashIcon
-                            className="w-4 h-4 text-gray-600"
-                            aria-hidden="true"
-                          />
-                          <span className="sr-only">
-                            Delete {wishlist.name}
-                          </span>
-                        </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 hover:bg-gray-100 transition"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleDeleteWishlist(wishlist.id);
+                            }}
+                          >
+                            <TrashIcon
+                              className="w-4 h-4 text-gray-600"
+                              aria-hidden="true"
+                            />
+                            <span className="sr-only">
+                              Delete {wishlist.name}
+                            </span>
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                    {/* <p className="text-gray-600">{wishlist.description}</p> */}
-                    <div className="flex items-center justify-between text-sm font-medium text-gray-600">
-                      {/* <span>Progress: {wishlist.progress}%</span> */}
-                      <span>
-                        {/* ${wishlist.currentAmount.toLocaleString()} / $
+                      {/* <p className="text-gray-600">{wishlist.description}</p> */}
+                      <div className="flex items-center justify-between text-sm font-medium text-gray-600">
+                        {/* <span>Progress: {wishlist.progress}%</span> */}
+                        <span>
+                          {/* ${wishlist.currentAmount.toLocaleString()} / $
                     {wishlist.targetAmount.toLocaleString()} */}
-                      </span>
-                    </div>
-                    {/* <Progress
+                        </span>
+                      </div>
+                      {/* <Progress
                   value={wishlist.progress}
                   className="w-full bg-green-500 rounded-full"
                 /> */}
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </DrawerTrigger>
               )
             )}
           </div>
@@ -339,6 +372,17 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                                 <span className="text-base font-semibold">
                                   {stock.name}
                                 </span>
+                                <Button
+                                  onClick={() =>
+                                    handleRemoveStock(
+                                      selectedWishlist.id,
+                                      stock.id
+                                    )
+                                  }
+                                  className="absolute top-0 right-0 m-2 p-1 h-6 w-6 rounded-full bg-red-600 text-white hover:bg-red-700 transition"
+                                >
+                                  ✕
+                                </Button>
                               </div>
                             </CardContent>
                           </Card>

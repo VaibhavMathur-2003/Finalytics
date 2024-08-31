@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import LandingPage from "@/components/Parallax";
 import ChartArea from "@/components/ChartArea";
 
