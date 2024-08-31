@@ -318,9 +318,9 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                       >
                         <div className="p-1">
                           <Card>
-                            <CardContent className="flex aspect-square items-center justify-center p-6">
+                            <CardContent className="flex aspect-square items-center justify-center p-6 bg-gray-900 text-white rounded-lg shadow-[0_10px_20px_rgba(0,0,0,0.19),_0_6px_6px_rgba(0,0,0,0.23)] hover:shadow-[0_0_0_3px_rgba(3,102,214,0.3)] transition-transform transform hover:scale-105">
                               <div className="text-center">
-                                <span className="text-xl font-semibold">
+                                <span className="text-base font-semibold">
                                   {stock.name}
                                 </span>
                               </div>
@@ -338,7 +338,7 @@ export default function WishlistsPart({ userId }: { userId: string }) {
             <DrawerFooter>
               {selectedWishlist && (
                 <Link href={`/wishlist/${selectedWishlist.id}`}>
-                  <Button>Fetch Data</Button>
+                  <Button className="w-full">Fetch Data</Button>
                 </Link>
               )}
               <DrawerClose asChild>

@@ -83,45 +83,53 @@ export default function WishlistData() {
     profit: number;
     fill: string;
   }
-  
+
   const generateRandomColor = (): string => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
+    const letters = "0123456789ABCDEF";
+    let color = "#";
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
   };
-  
-  const pieData = (data: Candle[]): { positiveProfits: StockProfit[], negativeProfits: StockProfit[] } => {
+
+  const pieData = (
+    data: Candle[]
+  ): { positiveProfits: StockProfit[]; negativeProfits: StockProfit[] } => {
     const profitMap: { [key: string]: number } = {};
-  
+
     data.forEach((item) => {
       const profit = item.profit;
-  
+
       if (profitMap[item.stockKey]) {
         profitMap[item.stockKey] += profit;
       } else {
         profitMap[item.stockKey] = profit;
       }
     });
-  
-    const stockProfits = Object.keys(profitMap).map((stockKey) => ({
-      stockKey,
-      profit: Math.abs(profitMap[stockKey]),
-      fill: generateRandomColor(),
-    }));
-  
-    const positiveProfits = stockProfits.filter((stock) => stock.profit > 0);
-    const negativeProfits = stockProfits.filter((stock) => stock.profit < 0);
-  
-    return {
-      positiveProfits,
-      negativeProfits,
-    };
+
+    const positiveProfits: StockProfit[] = [];
+    const negativeProfits: StockProfit[] = [];
+
+    Object.keys(profitMap).forEach((stockKey) => {
+      const profit = profitMap[stockKey];
+      const stockProfit = {
+        stockKey,
+        profit: Math.abs(profit),
+        fill: generateRandomColor(),
+      };
+
+      if (profit >= 0) {
+        positiveProfits.push(stockProfit);
+      } else {
+        negativeProfits.push(stockProfit);
+      }
+    });
+    positiveProfits.sort((a, b) => b.profit - a.profit);
+    negativeProfits.sort((a, b) => b.profit - a.profit);
+
+    return { positiveProfits, negativeProfits };
   };
-  
-  
 
   return (
     <div className="bg-gray-900 h-full">
@@ -148,14 +156,20 @@ export default function WishlistData() {
             </div>
             <div className="mb-4">
               <p className="text-sm">Total Profit</p>
-              <p className="text-3xl font-bold">{totalProfit.toFixed(2)} USD</p>
+              <p
+                className={`text-3xl font-bold ${
+                  totalProfit >= 0 ? "text-green-500" : "text-red-400"
+                }`}
+              >
+                {totalProfit.toFixed(2)} INR
+              </p>
             </div>
             <div className="flex justify-between items-center text-sm">
               <p>Vaibhav Mathur</p>
               <p>{new Date().getFullYear()}</p>
             </div>
           </div>
-          <div className="w-3/4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-6 rounded-xl shadow-lg mx-5">
+          {/* <div className="w-3/4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-6 rounded-xl shadow-lg mx-5">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Profit Card</h2>
               <span className="text-lg">💳</span>
@@ -168,16 +182,25 @@ export default function WishlistData() {
               <p>Vaibhav Mathur</p>
               <p>{new Date().getFullYear()}</p>
             </div>
-          </div>
+          </div> */}
         </div>
-        <AreaCharts stockData={stockData} />
-
+        <div className="my-8">
+        <AreaCharts stockData={stockData}/>
+        </div>
         <div className="flex justify-between">
-          <PieCharts stockData={pieData(stockData).positiveProfits}/>
-          <PieCharts stockData={pieData(stockData).negativeProfits}/>
+          <PieCharts
+            profit={pieData(stockData).positiveProfits}
+            loss={pieData(stockData).negativeProfits}
+          />
           <div className="flex">
-            {/* <Topers />
-            <Topers /> */}
+            <Topers
+              stockData={pieData(stockData).positiveProfits.slice(0, 5)}
+              title="Gainers"
+            />
+            <Topers
+              stockData={pieData(stockData).negativeProfits.slice(-5)}
+              title="Losers"
+            />
           </div>
         </div>
       </div>

@@ -75,7 +75,7 @@ export function AreaCharts({ stockData }: { stockData: Candle[] }) {
     <Card className="bg-gray-900 text-white border-none">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
-          <CardTitle>Area Chart - Interactive</CardTitle>
+          <CardTitle>Wishlist Performance</CardTitle>
           <CardDescription>
             Showing total profit for the selected time range
           </CardDescription>
@@ -106,32 +106,6 @@ export function AreaCharts({ stockData }: { stockData: Candle[] }) {
           className="aspect-auto h-[250px] w-full"
         >
           <AreaChart data={filteredData}>
-            <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-desktop)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-desktop)"
-                  stopOpacity={0.6}
-                />
-              </linearGradient>
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-profit)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-profit)"
-                  stopOpacity={0.6}
-                />
-              </linearGradient>
-            </defs>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="timestamp"
@@ -146,6 +120,8 @@ export function AreaCharts({ stockData }: { stockData: Candle[] }) {
                   day: "numeric",
                 });
               }}
+              tick={{ stroke: "#ffffff" }} // Replace with your desired color
+
             />
             <ChartTooltip
               cursor={false}
@@ -166,12 +142,14 @@ export function AreaCharts({ stockData }: { stockData: Candle[] }) {
               axisLine={false}
               tickMargin={24}
               tickCount={5}
+              tick={{ stroke: "#ffffff" }} // Replace with your desired color
             />
+
             <Area
               dataKey="profit"
               type="natural"
-              fill="#2a9d90"
-              stroke="#e76e50"
+              fill="#1ae7e3"
+              stroke="#ffffff"
               stackId="a"
             />
 

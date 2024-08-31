@@ -1,7 +1,10 @@
 [
   { "id": "1", "symbol": "NSE_EQ|INE848E01016", "name": "TCS" },
   { "id": "2", "symbol": "NSE_EQ|INE009A01021", "name": "Infosys" },
-  { "id": "3", "symbol": "NSE_EQ|INE062A01020", "name": "HDFC Bank" }
+  { "id": "3", "symbol": "NSE_EQ|INE062A01020", "name": "HDFC Bank" },
+  { "id": "4", "symbol": "NSE_EQ|INE758T01015", "name": "Zomato" },
+  { "id": "5", "symbol": "NSE_EQ|INE528G01035", "name": "YesBank" },
+  { "id": "6", "symbol": "NSE_EQ|INE510A01028", "name": "Engineersin" }
   ]
 
   
