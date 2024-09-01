@@ -25,6 +25,14 @@ const CREATE_USER = gql`
     }
   }
 `;
+async function hashPassword(password: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hash))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
 
 function Page() {
   const [email, setEmail] = useState("");
@@ -34,9 +42,12 @@ function Page() {
 
   const [createUser, { data, loading, error }] = useMutation(CREATE_USER);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    createUser({ variables: { email, password, name } });
+    const hashedPassword = await hashPassword(password);
+    createUser({ variables: { email, password: hashedPassword, name } });
   };
 
   if (error) return <p>Error: {error.message}</p>;

@@ -7,13 +7,11 @@ declare module "next-auth" {
       id: string
       email: string
       name: string
-      isAdmin: boolean
     } & DefaultSession["user"]
   }
 
   interface User extends DefaultUser {
     name: string
-    isAdmin: boolean
   }
 }
 
@@ -22,6 +20,5 @@ declare module "next-auth/jwt" {
     id?: string
     email?: string
     name?: string|null
-    isAdmin?: boolean
   }
 }

@@ -13,8 +13,9 @@ async function hashPassword(password: string): Promise<string> {
     .join('');
 }
 
+
 async function verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
-  const hashedInput = password;
+  const hashedInput = await hashPassword(password);;
   return hashedInput === hashedPassword;
 }
 
@@ -24,7 +25,6 @@ declare module "next-auth" {
     user: {
       id: string;
       name: string;
-      isAdmin: boolean;
     } & DefaultSession["user"];
   }
 }
@@ -68,7 +68,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: user.id.toString(),
           email: user.email,
           name: user.name,
-          isAdmin: user.isAdmin,
         };
       },
     }),
@@ -78,7 +77,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.id = user.id;
         token.name = user.name;
-        token.isAdmin = user.isAdmin;
       }
       return token;
     },
@@ -86,7 +84,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (session.user) {
         session.user.id = token.id as string;
         session.user.name = token.name as string;
-        session.user.isAdmin = token.isAdmin as boolean;
       }
       return session;
     },
