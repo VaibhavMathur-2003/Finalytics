@@ -1,8 +1,6 @@
 "use client";
-import { useEffect } from "react";
 import Link from "next/link";
 import { motion, useAnimation, useInView } from "framer-motion";
-import { useRef } from "react";
 import {
   Card,
   CardHeader,
@@ -25,11 +23,19 @@ import {
   ChartTooltip,
   ChartContainer,
 } from "@/components/ui/chart";
+import { ReactNode } from 'react';
+import { AnimationControls } from 'framer-motion';
+import { RefObject, useEffect, useRef } from 'react';
 
-function AnimatedSection({ children, className }) {
-  const controls = useAnimation();
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
+interface AnimatedSectionProps {
+  children: ReactNode;
+  className?: string;
+}
+
+function AnimatedSection({ children, className }: AnimatedSectionProps) {
+  const controls: AnimationControls = useAnimation();
+  const ref: RefObject<HTMLDivElement> = useRef(null);
+  const isInView: boolean = useInView(ref, { once: true, amount: 0.5 });
 
   useEffect(() => {
     if (isInView) {
