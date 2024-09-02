@@ -27,6 +27,7 @@ import {
   CarouselPrevious,
 } from "./ui/carousel";
 import Link from "next/link";
+import Image from "next/image";
 
 const CREATE_WISHLIST = gql`
   mutation CreateWishlist($name: String!, $userId: ID!) {
@@ -209,9 +210,11 @@ export default function WishlistsPart({ userId }: { userId: string }) {
         </div>
 
         <div className="absolute top-[100px] right-10">
-          <img
+          <Image
+          width={220}
+          height={220}
             src="/assets/stocks.png"
-            className="h-56 w-56 rounded-full border-white border-2 shadow-white shadow-lg brightness-150 hover:animate-bounce"
+            className="rounded-full border-white border-2 shadow-white shadow-lg brightness-150 hover:animate-bounce"
             alt=""
           />
         </div>
