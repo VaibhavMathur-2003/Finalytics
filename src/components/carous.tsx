@@ -204,7 +204,7 @@ export default function WishlistsPart({ userId }: { userId: string }) {
           />
         </div>
       </div>
-      <div className="flex flex-col justify-center">
+      <div className="md:flex hidden flex-col justify-center">
         <div className="absolute w-full flex justify-center ">
           <div className="absolute top-[50px] bg-white h-14 right-40 w-px"></div>
         </div>
@@ -366,7 +366,7 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                     {selectedWishlist?.stocks.map((stock, index) => (
                       <CarouselItem
                         key={stock.id}
-                        className="md:basis-1/2 lg:basis-1/5"
+                        className="md:basis-1/3 lg:basis-1/5 basis-1/2"
                       >
                         <div className="p-1">
                           <Card>

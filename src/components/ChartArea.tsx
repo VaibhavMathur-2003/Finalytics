@@ -62,7 +62,7 @@ function AnimatedSection({ children, className }: AnimatedSectionProps) {
 
 export default function ChartArea() {
   return (
-    <div className="flex flex-col min-h-[100dvh] max-w-7xl overflow-hidden">
+    <div className="flex flex-col min-h-[100dvh] max-w-7xl mb-12 rounded-b-[50px] px-4 sm:px-6 lg:px-8 overflow-hidden">
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
           <div className="container px-4 md:px-6">

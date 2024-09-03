@@ -6,6 +6,7 @@ import { ApolloWrapper } from "@/components/ApolloWrapper";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { auth, signOut } from "@/auth";
+import Image from "next/image";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -25,7 +26,7 @@ export default async function RootLayout({
   const session = await auth();
   const user = session?.user.id;
   return (
-    <html lang="en">
+    <html lang="en" className="overflow-x-hidden">
       <body
         className={cn(
           "min-h-screen bg-background overflow-x-hidden font-sans antialiased",
@@ -35,7 +36,11 @@ export default async function RootLayout({
         <nav className="fixed inset-x-0 top-0 z-20 bg-white z-50 shadow-sm dark:bg-gray-950/90 border-b-2 border-solid border-black">
           <div className="w-full max-w-7xl mx-auto px-4">
             <div className="flex justify-between h-14 items-center">
-              <Link href="/" className="flex items-center" prefetch={false}>
+              <Link
+                href="/"
+                className="flex items-center cursor-pointer"
+                prefetch={false}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -46,49 +51,56 @@ export default async function RootLayout({
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  className="cursor-pointer"
                 >
-                  <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
+                  <path
+                    d="m8 3 4 8 5-5 5 15H2L8 3z"
+                    className="cursor-pointer"
+                  />
                 </svg>
-                <span className="sr-only">Acme Inc</span>
+                <span className="sr-only curosor-pointer">B&C</span>
               </Link>
-              <nav className="hidden md:flex gap-4">
+
+              <nav className=" items-center justify-center flex gap-4">
                 <Link
                   href="/wishlist"
                   className="font-medium flex items-center text-sm transition-colors hover:underline"
                   prefetch={false}
                 >
-                  Your Wishlist
+                  Wishlist
                 </Link>
               </nav>
-              {!user ? (
-                <div className="flex items-center gap-4">
-                  <Link href="/signin">
-                    <Button variant="outline" size="sm">
-                      Sign in
-                    </Button>
-                  </Link>
-                  <Link href="/signup">
-                    <Button size="sm">Sign up</Button>
-                  </Link>
-                </div>
-              ) : (
-                <div className="flex items-center space-x-4  rounded-lg  p-4">
-
-                  <form
-                    action={async () => {
-                      "use server";
-                      await signOut({ redirectTo: "/signin" });
-                    }}
-                  >
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-150 ease-in-out"
+              <div>
+                {!user ? (
+                  <div className="flex items-center gap-4">
+                    <Link href="/signin">
+                      <Button variant="outline" size="sm">
+                        Sign in
+                      </Button>
+                    </Link>
+                    <Link href="/signup">
+                      <Button size="sm">Sign up</Button>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="flex items-center space-x-4 justify-between rounded-lg  p-4">
+                    <form
+                      action={async () => {
+                        "use server";
+                        await signOut({ redirectTo: "/signin" });
+                      }}
+                      className="cursor-pointer"
                     >
-                      Sign Out
-                    </button>
-                  </form>
-                </div>
-              )}
+                      <button
+                        type="submit"
+                        className="cursor-pointer flex items-center justify-between"
+                      >
+                       <Image height={36} width={36} src="/assets/logout.png" alt="SignOut" />
+                      </button>
+                    </form>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </nav>
