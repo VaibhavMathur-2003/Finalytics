@@ -13,7 +13,7 @@ export default function SignInForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   return (
-    <div className="flex min-h-[100dvh] items-center justify-center bg-gray-900 text-white px-4 py-12 sm:px-6 lg:px-8 ">
+    <div className="flex min-h-screen items-center justify-center bg-gray-900 text-white px-4 py-12 sm:px-6 lg:px-8 ">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Welcome To <span className='text-green-500'>Bulls</span>  & <span className='text-yellow-500'>Cents</span> </CardTitle>

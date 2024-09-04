@@ -163,7 +163,7 @@ export default function WishlistData() {
         Dashboard
       </h1>
       <div className="flex flex-col md:flex-row gap-5">
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-lg w-full md:w-2/3 flex flex-col justify-center p-6">
+        <div className="bg-gradient-to-r my-3 from-blue-500 to-indigo-600 rounded-xl shadow-lg w-full md:w-2/3 flex flex-col justify-center p-6">
           <div className="flex items-center justify-center w-full">
             <Popover>
               <PopoverTrigger asChild>
@@ -203,7 +203,7 @@ export default function WishlistData() {
             </Popover>
           </div>
         </div>
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-6 rounded-xl shadow-lg w-full md:w-1/3">
+        <div className="bg-gradient-to-r my-3 from-blue-500 to-indigo-600 text-white p-6 rounded-xl shadow-lg w-full md:w-1/3">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Profit Card</h2>
             <span className="text-lg">💳</span>

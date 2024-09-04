@@ -39,12 +39,12 @@ const Hero: React.FC = () => {
           </motion.span>
         ))}
       </div>
-      <section className="hero min-h-screen w-full flex flex-col justify-center items-center text-center relative">
+      <section className="hero min-[640px]:min-h-screen w-full flex flex-col sm:justify-center justify-start items-center text-center relative">
         {/* Image 1: Stocks */}
         <motion.img
           src="/assets/stocks.png"
           alt="Stocks"
-          className="absolute brightness-105 w-[60%] sm:w-[40%] lg:w-[30%]"
+          className="sm:absolute brightness-105 w-[60%] sm:w-[40%] lg:w-[30%]"
           style={{ scale: scaleStocks }}
         />
 
@@ -52,7 +52,7 @@ const Hero: React.FC = () => {
         <motion.img
           src="/assets/laptop.png"
           alt="Laptop"
-          className="absolute w-full  max-w-4xl"
+          className="hidden sm:flex absolute w-full  max-w-4xl"
           style={{ scale: scaleLaptop }}
         />
       </section>
