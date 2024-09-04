@@ -1,7 +1,6 @@
 "use client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { Input } from "./ui/input";
 import { Calendar } from "@/components/ui/smallcalendar";
 import { gql, useMutation, useQuery } from "@apollo/client";
@@ -213,7 +212,7 @@ export default function WishlistsPart({ userId }: { userId: string }) {
           <Image
           width={220}
           height={220}
-            src="/assets/stocks.png"
+            src="/assets/stocks.webp"
             className="rounded-full border-white border-2 shadow-white shadow-lg brightness-150 hover:animate-bounce"
             alt=""
           />
@@ -232,7 +231,7 @@ export default function WishlistsPart({ userId }: { userId: string }) {
               placeholder="Name your Wishlist"
               className="flex-grow mr-4 z-20"
             />
-            <Button
+            <Button aria-label="button"
               type="submit"
               className="bg-white text-black font-bold text-2xl p-4 rounded-xl shadow-lg hover:bg-gray-100 transition z-20"
             >
@@ -263,7 +262,7 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                           {wishlist.name}
                         </h3>
                         <div className="flex items-center gap-2">
-                          <Button
+                          <Button aria-label="button"
                             variant="ghost"
                             size="icon"
                             className="rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 transition"
@@ -277,7 +276,7 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                             </span>
                           </Button>
 
-                          <Button
+                          <Button aria-label="button"
                             variant="ghost"
                             size="icon"
                             className="rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 hover:bg-gray-100 transition"
@@ -296,18 +295,10 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                           </Button>
                         </div>
                       </div>
-                      {/* <p className="text-gray-600">{wishlist.description}</p> */}
                       <div className="flex items-center justify-between text-sm font-medium text-gray-600">
-                        {/* <span>Progress: {wishlist.progress}%</span> */}
                         <span>
-                          {/* ${wishlist.currentAmount.toLocaleString()} / $
-                    {wishlist.targetAmount.toLocaleString()} */}
                         </span>
                       </div>
-                      {/* <Progress
-                  value={wishlist.progress}
-                  className="w-full bg-green-500 rounded-full"
-                /> */}
                     </CardContent>
                   </Card>
                 </DrawerTrigger>
@@ -346,7 +337,7 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                   onChange={(e) => setStockQuantity(Number(e.target.value))}
                 />
 
-                <Button
+                <Button aria-label="button"
                   type="submit"
                   className="bg-white text-black font-bold text-2xl p-4 rounded-xl border border-black shadow-lg hover:bg-gray-100 transition z-20"
                 >
@@ -375,7 +366,7 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                                 <span className="text-base font-semibold">
                                   {stock.name}
                                 </span>
-                                <Button
+                                <Button aria-label="button"
                                   onClick={() =>
                                     handleRemoveStock(
                                       selectedWishlist.id,
@@ -401,11 +392,11 @@ export default function WishlistsPart({ userId }: { userId: string }) {
             <DrawerFooter>
               {selectedWishlist && (
                 <Link href={`/wishlist/${selectedWishlist.id}`}>
-                  <Button className="w-full">Fetch Data</Button>
+                  <Button aria-label="button" className="w-full">Fetch Data</Button>
                 </Link>
               )}
               <DrawerClose asChild>
-                <Button variant="outline">Close</Button>
+                <Button aria-label="button" variant="outline">Close</Button>
               </DrawerClose>
             </DrawerFooter>
           </div>

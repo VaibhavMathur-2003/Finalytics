@@ -51,13 +51,13 @@ export default function SignInForm() {
             </div>
             <div className="relative">
               <Input id="password" type="password" name="password"/>
-              <Button variant="ghost" size="icon" className="absolute bottom-1 right-1 h-7 w-7">
+              <Button aria-label="button" variant="ghost" size="icon" className="absolute bottom-1 right-1 h-7 w-7">
                 <EyeIcon className="h-4 w-4" />
                 <span className="sr-only">Toggle password visibility</span>
               </Button>
             </div>
           </div>
-          <Button type="submit" className="w-full bg-green-700">
+          <Button aria-label="button" type="submit" className="w-full bg-green-700">
             Sign in
           </Button>
         </CardContent>

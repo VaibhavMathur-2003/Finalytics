@@ -27,7 +27,7 @@ function Calendar({
         nav: "space-x-1 flex items-center",
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
-          "h-4 w-4 bg-transparent p-0 opacity-50 hover:opacity-100"
+          "h-4 w-4 bg-transparent p-0 opacity-50 hover:opacity-100 hidden"
         ),
         nav_button_previous: "absolute left-1",
         nav_button_next: "absolute right-1",
@@ -53,10 +53,7 @@ function Calendar({
         day_hidden: "invisible",
         ...classNames,
       }}
-      components={{
-        IconLeft: ({ ...props }) => <ChevronLeft className="h-2 w-2" />,
-        IconRight: ({ ...props }) => <ChevronRight className="h-2 w-2" />,
-      }}
+      
       {...props}
     />
   )

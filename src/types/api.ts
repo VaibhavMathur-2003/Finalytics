@@ -26,7 +26,7 @@ export async function fetchCandlesForStock(stockKey: string, quantity: number): 
 
   return data.data.candles.map(([timestamp, open, high, low, close, volume, unknown]) => {
     const date = timestamp.split('T')[0];
-    const profit = (close - open) * quantity;  // Calculate actual profit by multiplying with quantity
+    const profit = (close - open) * quantity;
     return {
       timestamp: date,
       open,
@@ -36,7 +36,7 @@ export async function fetchCandlesForStock(stockKey: string, quantity: number): 
       volume,
       unknown,
       stockKey,
-      profit,  // Actual profit
+      profit,
     };
   });
 }

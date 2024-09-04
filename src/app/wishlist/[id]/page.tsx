@@ -4,13 +4,11 @@ import { useEffect, useState } from "react";
 import { fetchCandlesForStock } from "@/types/api";
 import { Candle } from "@/types/types";
 import { gql, useQuery } from "@apollo/client";
-import { Card } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
-import { DualRangeSlider } from "@/components/ui/dualrangeslider";
 import { PieCharts } from "@/components/ui/piechart";
 import { AreaCharts } from "@/components/ui/areaChart";
 import { Topers } from "@/components/ui/topers";
-import { addDays, format } from "date-fns";
+import { format } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -167,7 +165,7 @@ export default function WishlistData() {
           <div className="flex items-center justify-center w-full">
             <Popover>
               <PopoverTrigger asChild>
-                <Button
+                <Button aria-label="button"
                   id="date"
                   variant={"outline"}
                   className={cn(
@@ -248,3 +246,5 @@ export default function WishlistData() {
   
   );
 }
+
+

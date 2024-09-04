@@ -1,31 +1,21 @@
 "use client";
-import Link from "next/link";
 import { motion, useAnimation, useInView } from "framer-motion";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardContent,
-  CardFooter,
-  CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  CartesianGrid,
-  XAxis,
-  Line,
-  LineChart,
-  Pie,
-  PieChart,
-} from "recharts";
+import { CartesianGrid, XAxis, Line, LineChart, Pie, PieChart } from "recharts";
 import {
   ChartTooltipContent,
   ChartTooltip,
   ChartContainer,
 } from "@/components/ui/chart";
-import { ReactNode } from 'react';
-import { AnimationControls } from 'framer-motion';
-import { RefObject, useEffect, useRef } from 'react';
+import { ReactNode } from "react";
+import { AnimationControls } from "framer-motion";
+import { RefObject, useEffect, useRef } from "react";
 
 interface AnimatedSectionProps {
   children: ReactNode;
@@ -59,6 +49,32 @@ function AnimatedSection({ children, className }: AnimatedSectionProps) {
     </motion.div>
   );
 }
+const stocks = [
+  {
+    name: "Apple Inc.",
+    symbol: "AAPL",
+    change: "+2.5%",
+    changeColor: "text-green-500",
+  },
+  {
+    name: "Microsoft Corp.",
+    symbol: "MSFT",
+    change: "-1.2%",
+    changeColor: "text-red-500",
+  },
+  {
+    name: "Amazon.com, Inc.",
+    symbol: "AMZN",
+    change: "+3.8%",
+    changeColor: "text-green-500",
+  },
+  {
+    name: "Tesla, Inc.",
+    symbol: "TSLA",
+    change: "-0.9%",
+    changeColor: "text-red-500",
+  },
+];
 
 export default function ChartArea() {
   return (
@@ -87,86 +103,34 @@ export default function ChartArea() {
                     <div className="grid gap-4">
                       <CardContent>
                         <div className="grid gap-4">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <StoreIcon className="h-6 w-6" />
-                              <div>
-                                <div className="font-medium">Apple Inc.</div>
-                                <div className="text-sm text-muted-foreground">
-                                  AAPL
+                          {stocks.map((stock, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center justify-between"
+                            >
+                              <div className="flex items-center gap-2">
+                                <StoreIcon className="h-6 w-6" />
+                                <div>
+                                  <div className="font-medium">
+                                    {stock.name}
+                                  </div>
+                                  <div className="text-sm text-muted-foreground">
+                                    {stock.symbol}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <div className="text-sm font-medium text-green-500">
-                                +2.5%
-                              </div>
-                              <Button variant="ghost" size="icon">
-                                <XIcon className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <StoreIcon className="h-6 w-6" />
-                              <div>
-                                <div className="font-medium">
-                                  Microsoft Corp.
+                              <div className="flex items-center gap-2">
+                                <div
+                                  className={`text-sm font-medium ${stock.changeColor}`}
+                                >
+                                  {stock.change}
                                 </div>
-                                <div className="text-sm text-muted-foreground">
-                                  MSFT
-                                </div>
+                                <Button aria-label="button" variant="ghost" size="icon">
+                                  <XIcon className="h-4 w-4" />
+                                </Button>
                               </div>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <div className="text-sm font-medium text-red-500">
-                                -1.2%
-                              </div>
-                              <Button variant="ghost" size="icon">
-                                <XIcon className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <StoreIcon className="h-6 w-6" />
-                              <div>
-                                <div className="font-medium">
-                                  Amazon.com, Inc.
-                                </div>
-                                <div className="text-sm text-muted-foreground">
-                                  AMZN
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <div className="text-sm font-medium text-green-500">
-                                +3.8%
-                              </div>
-                              <Button variant="ghost" size="icon">
-                                <XIcon className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <StoreIcon className="h-6 w-6" />
-                              <div>
-                                <div className="font-medium">Tesla, Inc.</div>
-                                <div className="text-sm text-muted-foreground">
-                                  TSLA
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <div className="text-sm font-medium text-red-500">
-                                -0.9%
-                              </div>
-                              <Button variant="ghost" size="icon">
-                                <XIcon className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </div>
+                          ))}
                         </div>
                       </CardContent>
                     </div>
@@ -181,7 +145,6 @@ export default function ChartArea() {
                   <CardContent>
                     <LinechartChart className="aspect-[9/4]" />
                   </CardContent>
-                  
                 </Card>
               </AnimatedSection>
             </div>
@@ -193,7 +156,7 @@ export default function ChartArea() {
               <AnimatedSection className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
                   <motion.h1
-                    className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none"
+                    className="text-3xl font-semibold tracking-tight sm:text-5xl xl:text-6xl/none"
                     variants={{
                       hidden: { opacity: 0 },
                       visible: { opacity: 1 },
@@ -215,29 +178,7 @@ export default function ChartArea() {
                     and visualizations.
                   </motion.p>
                 </div>
-                <motion.div
-                  className="flex flex-col gap-2 min-[400px]:flex-row"
-                  variants={{
-                    hidden: { opacity: 0 },
-                    visible: { opacity: 1 },
-                  }}
-                  transition={{ delay: 0.6, duration: 0.5 }}
-                >
-                  <Link
-                    href="/wishlist"
-                    className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    prefetch={false}
-                  >
-                    Get Started
-                  </Link>
-                  <Link
-                    href="/wishlist"
-                    className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 text-black"
-                    prefetch={false}
-                  >
-                    Learn More
-                  </Link>
-                </motion.div>
+               
               </AnimatedSection>
               <div className="">
                 <Card>
@@ -385,7 +326,11 @@ function PiechartcustomChart(props: any) {
           <Pie
             data={[
               { browser: "IRFC", visitors: 275, fill: "var(--color-chrome)" },
-              { browser: "Infosys", visitors: 200, fill: "var(--color-safari)" },
+              {
+                browser: "Infosys",
+                visitors: 200,
+                fill: "var(--color-safari)",
+              },
               {
                 browser: "Zomato",
                 visitors: 187,

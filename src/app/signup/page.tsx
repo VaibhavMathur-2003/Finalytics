@@ -100,7 +100,7 @@ function Page() {
                   type="password"
                   name="password"
                 />
-                <Button
+                <Button aria-label="button"
                   variant="ghost"
                   size="icon"
                   className="absolute bottom-1 right-1 h-7 w-7"
@@ -115,7 +115,7 @@ function Page() {
                 Submitting...
               </div>
             ) : (
-              <Button type="submit" className="w-full bg-green-700">
+              <Button aria-label="button" type="submit" className="w-full bg-green-700">
                 Sign up
               </Button>
             )}
