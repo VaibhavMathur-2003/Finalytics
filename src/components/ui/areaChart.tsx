@@ -76,7 +76,7 @@ export function AreaCharts({ stockData }: { stockData: Candle[] }) {
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
           <CardTitle>Wishlist Performance</CardTitle>
-          <CardDescription>
+          <CardDescription className="text-gray-300">
             Showing total profit for the selected time range
           </CardDescription>
         </div>

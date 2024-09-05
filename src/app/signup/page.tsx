@@ -60,8 +60,7 @@ function Page() {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">
-            Welcome To <span className="text-green-500">Bulls</span> &{" "}
-            <span className="text-yellow-500">Cents</span>{" "}
+            Welcome To <span className="text-green-600">Finalytics</span> &{" "}
           </CardTitle>
           <CardDescription>
             Enter your email and password to access your account.

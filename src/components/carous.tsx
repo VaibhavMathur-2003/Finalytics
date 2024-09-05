@@ -326,7 +326,7 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                   {stocksData.map(
                     (stock: { id: string; symbol: string; name: string }) => (
                       <option key={stock.id} value={stock.id}>
-                        {stock.symbol} - {stock.name}
+                       {stock.name}
                       </option>
                     )
                   )}

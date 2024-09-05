@@ -87,7 +87,7 @@ export default function ChartArea() {
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                   Manage Your Stock Wishlist
                 </h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                <p className="max-w-[900px] text-gray-700 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   Add, remove, and track the stocks youre interested in. Our
                   platform makes it easy to stay on top of your portfolio.
                 </p>
@@ -154,7 +154,7 @@ export default function ChartArea() {
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
               <AnimatedSection className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
+                <div className="space-y-4">
                   <motion.h1
                     className="text-3xl font-semibold tracking-tight sm:text-5xl xl:text-6xl/none"
                     variants={{
@@ -166,7 +166,7 @@ export default function ChartArea() {
                     Unlock the Power of Finance Analytics
                   </motion.h1>
                   <motion.p
-                    className="max-w-[600px] text-gray-400 md:text-xl"
+                    className="max-w-[600px] text-gray-300 md:text-xl"
                     variants={{
                       hidden: { opacity: 0 },
                       visible: { opacity: 1 },

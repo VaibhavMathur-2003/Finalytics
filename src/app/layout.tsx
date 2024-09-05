@@ -34,7 +34,7 @@ export default async function RootLayout({
           newsreader.className
         )}
       >
-        <nav className="fixed inset-x-0 top-0 z-20 bg-white z-50 shadow-sm dark:bg-gray-950/90 border-b-2 border-solid border-black">
+        <nav className="fixed inset-x-0 top-0 z-20 bg-white z-50 shadow-sm  border-b-2 border-solid border-black">
           <div className="w-full max-w-7xl mx-auto px-4">
             <div className="flex justify-between h-14 items-center">
               <Link
@@ -65,7 +65,7 @@ export default async function RootLayout({
               <nav className=" items-center justify-center flex gap-4">
                 <Link
                   href="/wishlist"
-                  className="font-medium flex font-semibold tracking-wide items-center text-sm transition-colors hover:underline"
+                  className="font-medium flex font-semibold tracking-wide items-center text-sm transition-colors hover:underline hover:scale-110"
                   prefetch={false}
                 >
                   Wishlist
@@ -94,7 +94,7 @@ export default async function RootLayout({
                     >
                       <Button aria-label="button"
                         type="submit"
-                        className="cursor-pointer flex items-center justify-between"
+                        className="cursor-pointer hover:bg-white bg-white flex items-center justify-between"
                       >
                        <Image height={36} width={36} src="/assets/logout.webp" alt="SignOut" />
                       </Button>

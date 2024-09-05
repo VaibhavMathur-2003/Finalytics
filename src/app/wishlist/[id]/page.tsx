@@ -217,7 +217,7 @@ export default function WishlistData() {
             </p>
           </div>
           <div className="flex justify-between items-center text-sm">
-            <p>Vaibhav Mathur</p>
+            <p></p>
             <p>{new Date().getFullYear()}</p>
           </div>
         </div>
