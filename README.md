@@ -1,4 +1,4 @@
-# ![Finalytics](public\assets\Landing.webp)
+# ![Finalytics](https://github.com/VaibhavMathur-2003/Finalytics/blob/main/public/assets/Landing.webp)
 # Finalytics
 <table>
 <tr>
@@ -15,29 +15,37 @@
 ## Landing Page
 Utilized Framer-motion to animate frontend
 
-![](public\assets\Landing2.webp)
-![](public\assets\Landing3.webp)
+![](https://github.com/VaibhavMathur-2003/Finalytics/blob/main/public/assets/Landing2.webp)
+![](https://github.com/VaibhavMathur-2003/Finalytics/blob/main/public/assets/Landing3.webp)
 
 ### Wishlist Page
 Add as-many wishlist as you want and get complete analytics.
 
-![](public\assets\Wishlist.webp)
-![](public\assets\Drawer.webp)
+![](https://github.com/VaibhavMathur-2003/Finalytics/blob/main/public/assets/Wishlist.webp)
+![](https://github.com/VaibhavMathur-2003/Finalytics/blob/main/public/assets/Drawer.webp)
 
 ### Dashboard
 Analysing profit-loss distribution, top gainer/losers, a calender to set date range etc.
 
-![](public\assets\Dashboard.webp)
+![](https://github.com/VaibhavMathur-2003/Finalytics/blob/main/public/assets/Dashboard.webp)
+
+## Built with 
+
+- NextJs
+- PostgreSQL
+- GraphQL
+- TypeScript
+- Tailwind
+- Next-auth
+- ShadCN
+- Framer Motion
 
 
 ## Mobile support
 The WebApp is compatible with devices of all sizes.
 
-![](public\assets\Mobile.webp) 
-![](public\assets\MobileD.webp) 
-
-
-
+![](https://github.com/VaibhavMathur-2003/Finalytics/blob/main/public/assets/Mobile.webp) 
+![](https://github.com/VaibhavMathur-2003/Finalytics/blob/main/public/assets/MobileD.webp) 
 
 
 ## Development
@@ -56,19 +64,6 @@ To fix a bug or enhance an existing module, follow these steps:
 ### Bug / Feature Request
 
 If you find a bug (the website couldn't handle the query and / or gave undesired results) or like to request a new function, kindly open an issue [here](https://github.com/VaibhavMathur-2003/Finalytics/issues).
-
-
-## Built with 
-
-- NextJs
-- PostgreSQL
-- GraphQL
-- TypeScript
-- Tailwind
-- Next-auth
-- ShadCN
-- Framer Motion
-
 
 
 ## [License](https://github.com/VaibhavMathur-2003/Finalytics/LICENSE.md)
