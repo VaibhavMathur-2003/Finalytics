@@ -7,6 +7,7 @@ import Link from "next/link";
 import { auth, signOut } from "@/auth";
 import Image from "next/image";
 import {IBM_Plex_Serif} from 'next/font/google';
+import { Analytics } from "@vercel/analytics/react"
 
 const newsreader = IBM_Plex_Serif({
   weight: ['400', '700'],
@@ -106,6 +107,7 @@ export default async function RootLayout({
           </div>
         </nav>
         <ApolloWrapper>{children}</ApolloWrapper>
+        <Analytics />
       </body>
     </html>
   );

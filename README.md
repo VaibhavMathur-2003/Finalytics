@@ -42,7 +42,7 @@ Analysing profit-loss distribution, top gainer/losers, a calender to set date ra
 
 
 ## Mobile support
-The WebApp is compatible with devices of all sizes.
+Finalytics is compatible with devices of all sizes.
 
 ![](https://github.com/VaibhavMathur-2003/Finalytics/blob/main/public/assets/Mobile.webp) 
 ![](https://github.com/VaibhavMathur-2003/Finalytics/blob/main/public/assets/MobileD.webp) 

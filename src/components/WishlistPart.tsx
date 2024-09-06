@@ -200,10 +200,10 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                     <DrawerTrigger key={wishlist.id} asChild>
                       <Card
                         key={wishlist.id}
-                        className="relative overflow-hidden rounded-xl border-4 border-blue-500 shadow-lg transition-all hover:shadow-2xl hover:border-red-600 transform hover:-translate-y-1 cursor-pointer"
+                        className="relative overflow-hidden rounded-xl my-4 border-4 border-blue-500 shadow-lg transition-all hover:shadow-2xl hover:border-red-600 transform hover:-translate-y-1 cursor-pointer"
                         onClick={() => setSelectedWishlist(wishlist)}
                       >
-                        <CardContent className="p-4  gap-2 justify-center bg-white">
+                        <CardContent className="p-3 gap-2 justify-center bg-white">
                           <div className="flex items-center justify-between">
                             <h3 className="text-lg font-semibold text-gray-800">
                               {wishlist.name}
