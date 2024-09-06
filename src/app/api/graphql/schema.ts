@@ -34,14 +34,12 @@ export const typeDefs = gql`
 
   type Mutation {
     createUser(email: String!, password: String!, name: String): User!
-    updateUser(id: ID!, email: String, name: String): User!
-    deleteUser(id: ID!): User
 
     createWishlist(name: String!, userId: ID!): Wishlist!
     updateWishlist(id: ID!, name: String): Wishlist!
     deleteWishlist(id: ID!): Wishlist
 
-    updateStock(id: ID!, name: String, quantity: Float): Stock!
+    
     deleteStock(id: ID!): Stock
 
     createStock(symbol: String!, name: String!, quantity: Float): Stock!

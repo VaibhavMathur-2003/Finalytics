@@ -12,7 +12,6 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
@@ -27,77 +26,15 @@ import {
 } from "./ui/carousel";
 import Link from "next/link";
 import Image from "next/image";
-
-const CREATE_WISHLIST = gql`
-  mutation CreateWishlist($name: String!, $userId: ID!) {
-    createWishlist(name: $name, userId: $userId) {
-      id
-      name
-    }
-  }
-`;
-
-const CREATE_STOCK = gql`
-  mutation CreateStock($symbol: String!, $name: String!, $quantity: Float!) {
-    createStock(symbol: $symbol, name: $name, quantity: $quantity) {
-      id
-    }
-  }
-`;
-
-const ADD_STOCK_TO_WISHLIST = gql`
-  mutation AddStockToWishlist($wishlistId: ID!, $stockId: ID!) {
-    addStockToWishlist(wishlistId: $wishlistId, stockId: $stockId) {
-      id
-      name
-      stocks {
-        id
-        symbol
-        name
-        quantity
-      }
-    }
-  }
-`;
-
-const GET_USER_WISHLISTS = gql`
-  query GetUserWishlists($userId: ID!) {
-    user(id: $userId) {
-      id
-      wishlists {
-        id
-        name
-        stocks {
-          id
-          symbol
-          name
-          quantity
-        }
-      }
-    }
-  }
-`;
-const DELETE_WISHLIST = gql`
-  mutation DeleteWishlist($id: ID!) {
-    deleteWishlist(id: $id) {
-      id
-    }
-  }
-`;
-
-const REMOVE_STOCK_FROM_WISHLIST = gql`
-  mutation RemoveStockFromWishlist($wishlistId: ID!, $stockId: ID!) {
-    removeStockFromWishlist(wishlistId: $wishlistId, stockId: $stockId) {
-      id
-      stocks {
-        id
-        symbol
-        name
-        quantity
-      }
-    }
-  }
-`;
+import { PencilIcon, TrashIcon, XIcon } from "./functions/icons";
+import {
+  ADD_STOCK_TO_WISHLIST,
+  CREATE_STOCK,
+  CREATE_WISHLIST,
+  DELETE_WISHLIST,
+  GET_USER_WISHLISTS,
+  REMOVE_STOCK_FROM_WISHLIST,
+} from "./functions/gql";
 
 export default function WishlistsPart({ userId }: { userId: string }) {
   const [wishlistName, setWishlistName] = useState("");
@@ -210,8 +147,8 @@ export default function WishlistsPart({ userId }: { userId: string }) {
 
         <div className="absolute top-[100px] right-10">
           <Image
-          width={220}
-          height={220}
+            width={220}
+            height={220}
             src="/assets/stocks.webp"
             className="rounded-full border-white border-2 shadow-white shadow-lg brightness-150 hover:animate-bounce"
             alt=""
@@ -231,7 +168,8 @@ export default function WishlistsPart({ userId }: { userId: string }) {
               placeholder="Name your Wishlist"
               className="flex-grow mr-4 z-20"
             />
-            <Button aria-label="button"
+            <Button
+              aria-label="button"
               type="submit"
               className="bg-white text-black font-bold text-2xl p-4 rounded-xl shadow-lg hover:bg-gray-100 transition z-20"
             >
@@ -239,70 +177,82 @@ export default function WishlistsPart({ userId }: { userId: string }) {
             </Button>
           </form>
           <div className="grid grid-cols-1 gap-6  max-w-4xl mx-auto overflow-y-scroll max-h-[500px] no-scrollbar">
-            {userData?.user?.wishlists.map(
-              (wishlist: {
-                id: string;
-                name: string;
-                stocks: Array<{
-                  id: string;
-                  symbol: string;
-                  name: string;
-                  quantity: number;
-                }>;
-              }) => (
-                <DrawerTrigger key={wishlist.id} asChild>
-                  <Card
-                    key={wishlist.id}
-                    className="relative overflow-hidden rounded-xl border-4 border-blue-500 shadow-lg transition-all hover:shadow-2xl hover:border-red-600 transform hover:-translate-y-1 cursor-pointer"
-                    onClick={() => setSelectedWishlist(wishlist)}
-                  >
-                    <CardContent className="p-4  gap-2 justify-center bg-white">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-semibold text-gray-800">
-                          {wishlist.name}
-                        </h3>
-                        <div className="flex items-center gap-2">
-                          <Button aria-label="button"
-                            variant="ghost"
-                            size="icon"
-                            className="rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 transition"
-                          >
-                            <PencilIcon
-                              className="w-4 h-4 text-gray-600"
-                              aria-hidden="true"
-                            />
-                            <span className="sr-only">
-                              Edit {wishlist.name}
-                            </span>
-                          </Button>
+            {!userData?.user?.wishlists ? (
+              <div className="flex w-full items-center justify-center">
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="animate-spin rounded-full border-4 border-gray-100 border-t-gray-400 h-12 w-12" />
+                  <p className="text-gray-300">Loading...</p>
+                </div>
+              </div>
+            ) : (
+              <div>
+                {userData?.user?.wishlists.map(
+                  (wishlist: {
+                    id: string;
+                    name: string;
+                    stocks: Array<{
+                      id: string;
+                      symbol: string;
+                      name: string;
+                      quantity: number;
+                    }>;
+                  }) => (
+                    <DrawerTrigger key={wishlist.id} asChild>
+                      <Card
+                        key={wishlist.id}
+                        className="relative overflow-hidden rounded-xl border-4 border-blue-500 shadow-lg transition-all hover:shadow-2xl hover:border-red-600 transform hover:-translate-y-1 cursor-pointer"
+                        onClick={() => setSelectedWishlist(wishlist)}
+                      >
+                        <CardContent className="p-4  gap-2 justify-center bg-white">
+                          <div className="flex items-center justify-between">
+                            <h3 className="text-lg font-semibold text-gray-800">
+                              {wishlist.name}
+                            </h3>
+                            <div className="flex items-center gap-2">
+                              <Button
+                                aria-label="button"
+                                variant="ghost"
+                                size="icon"
+                                className="rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 transition"
+                              >
+                                <PencilIcon
+                                  className="w-4 h-4 text-gray-600"
+                                  aria-hidden="true"
+                                />
+                                <span className="sr-only">
+                                  Edit {wishlist.name}
+                                </span>
+                              </Button>
 
-                          <Button aria-label="button"
-                            variant="ghost"
-                            size="icon"
-                            className="rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 hover:bg-gray-100 transition"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              handleDeleteWishlist(wishlist.id);
-                            }}
-                          >
-                            <TrashIcon
-                              className="w-4 h-4 text-gray-600"
-                              aria-hidden="true"
-                            />
-                            <span className="sr-only">
-                              Delete {wishlist.name}
-                            </span>
-                          </Button>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between text-sm font-medium text-gray-600">
-                        <span>
-                        </span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </DrawerTrigger>
-              )
+                              <Button
+                                aria-label="button"
+                                variant="ghost"
+                                size="icon"
+                                className="rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 hover:bg-gray-100 transition"
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  handleDeleteWishlist(wishlist.id);
+                                }}
+                              >
+                                <TrashIcon
+                                  className="w-4 h-4 text-gray-600"
+                                  aria-hidden="true"
+                                />
+                                <span className="sr-only">
+                                  Delete {wishlist.name}
+                                </span>
+                              </Button>
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-between text-sm font-medium text-gray-600">
+                            <span></span>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </DrawerTrigger>
+                  )
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -326,7 +276,7 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                   {stocksData.map(
                     (stock: { id: string; symbol: string; name: string }) => (
                       <option key={stock.id} value={stock.id}>
-                       {stock.name}
+                        {stock.name}
                       </option>
                     )
                   )}
@@ -337,7 +287,8 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                   onChange={(e) => setStockQuantity(Number(e.target.value))}
                 />
 
-                <Button aria-label="button"
+                <Button
+                  aria-label="button"
                   type="submit"
                   className="bg-white text-black font-bold text-2xl p-4 rounded-xl border border-black shadow-lg hover:bg-gray-100 transition z-20"
                 >
@@ -364,9 +315,10 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                             <CardContent className="flex aspect-square items-center justify-center p-6 bg-gray-900 text-white rounded-lg shadow-[0_10px_20px_rgba(0,0,0,0.19),_0_6px_6px_rgba(0,0,0,0.23)] hover:shadow-[0_0_0_3px_rgba(3,102,214,0.3)] transition-transform transform hover:scale-105">
                               <div className="text-center">
                                 <span className="text-base font-semibold">
-                                  {stock.name}
+                                  {stock.name.slice(0, 10)}
                                 </span>
-                                <Button aria-label="button"
+                                <Button
+                                  aria-label="button"
                                   onClick={() =>
                                     handleRemoveStock(
                                       selectedWishlist.id,
@@ -375,7 +327,7 @@ export default function WishlistsPart({ userId }: { userId: string }) {
                                   }
                                   className="absolute top-0 right-0 m-2 p-1 h-6 w-6 rounded-full bg-red-600 text-white hover:bg-red-700 transition"
                                 >
-                                  ✕
+                                  <XIcon />
                                 </Button>
                               </div>
                             </CardContent>
@@ -392,57 +344,20 @@ export default function WishlistsPart({ userId }: { userId: string }) {
             <DrawerFooter>
               {selectedWishlist && (
                 <Link href={`/wishlist/${selectedWishlist.id}`}>
-                  <Button aria-label="button" className="w-full">Fetch Data</Button>
+                  <Button aria-label="button" className="w-full">
+                    Fetch Data
+                  </Button>
                 </Link>
               )}
               <DrawerClose asChild>
-                <Button aria-label="button" variant="outline">Close</Button>
+                <Button aria-label="button" variant="outline">
+                  Close
+                </Button>
               </DrawerClose>
             </DrawerFooter>
           </div>
         </DrawerContent>
       </Drawer>
     </div>
-  );
-}
-
-function PencilIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-      <path d="m15 5 4 4" />
-    </svg>
-  );
-}
-
-function TrashIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M3 6h18" />
-      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-    </svg>
   );
 }

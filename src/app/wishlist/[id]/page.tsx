@@ -3,7 +3,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchCandlesForStock } from "@/types/api";
 import { Candle } from "@/types/types";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { Calendar } from "@/components/ui/calendar";
 import { PieCharts } from "@/components/ui/piechart";
 import { AreaCharts } from "@/components/ui/areaChart";
@@ -17,21 +17,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-const GET_WISHLIST = gql`
-  query GetWishlist($id: ID!) {
-    wishlist(id: $id) {
-      id
-      name
-      stocks {
-        id
-        symbol
-        name
-        quantity
-      }
-    }
-  }
-`;
+import { GET_WISHLIST } from "@/components/functions/gql";
+import { pieData } from "@/components/functions/icons";
 
 export default function WishlistData() {
   const params = useParams();
@@ -100,59 +87,8 @@ export default function WishlistData() {
     0
   );
 
-  interface StockProfit {
-    stockKey: string;
-    profit: number;
-    fill: string;
-  }
 
-  const generateRandomColor = (): string => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
-
-  const pieData = (
-    data: Candle[]
-  ): { positiveProfits: StockProfit[]; negativeProfits: StockProfit[] } => {
-    const profitMap: { [key: string]: number } = {};
-
-    data.forEach((item) => {
-      const profit = item.close - item.open; // Assuming this calculates profit
-
-      if (profitMap[item.stockKey]) {
-        profitMap[item.stockKey] += profit;
-      } else {
-        profitMap[item.stockKey] = profit;
-      }
-    });
-
-    const positiveProfits: StockProfit[] = [];
-    const negativeProfits: StockProfit[] = [];
-
-    Object.keys(profitMap).forEach((stockKey) => {
-      const profit = profitMap[stockKey];
-      const stockProfit = {
-        stockKey,
-        profit: Math.abs(profit),
-        fill: generateRandomColor(),
-      };
-
-      if (profit >= 0) {
-        positiveProfits.push(stockProfit);
-      } else {
-        negativeProfits.push(stockProfit);
-      }
-    });
-
-    positiveProfits.sort((a, b) => b.profit - a.profit);
-    negativeProfits.sort((a, b) => b.profit - a.profit);
-
-    return { positiveProfits, negativeProfits };
-  };
+  
 
   return (
     <div className="bg-gray-900 min-h-screen">

@@ -16,3 +16,9 @@ export interface Candle {
       candles: [string, number, number, number, number, number, number][];
     };
   }
+
+  export interface StockProfit {
+    stockKey: string;
+    profit: number;
+    fill: string;
+  }

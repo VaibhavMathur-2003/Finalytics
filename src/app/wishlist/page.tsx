@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import WishlistsPart from "@/components/carous";
+import WishlistsPart from "@/components/WishlistPart";
 import { redirect } from 'next/navigation'
 
 

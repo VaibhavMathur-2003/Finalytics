@@ -16,9 +16,24 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
+
 export default function SignInForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+
+  const guestEmail = "guest@example.com";
+  const guestPassword = "123456987";
+
+  const handleGuestLogin = async () => {
+   
+    const signInError = await loginHandler(guestEmail, guestPassword);
+    if (signInError) {
+      setError(signInError);
+    } else {
+      router.refresh();
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-900 text-white px-4 py-12 sm:px-6 lg:px-8 ">
       <Card className="w-full max-w-md">
@@ -77,12 +92,21 @@ export default function SignInForm() {
                 </Button>
               </div>
             </div>
+           
             <Button
               aria-label="button"
               type="submit"
               className="w-full bg-green-700"
             >
               Sign in
+            </Button>
+            <Button
+              aria-label="guest-login"
+              type="button"
+              className="w-full mt-2 bg-gray-700"
+              onClick={handleGuestLogin}
+            >
+              Enter as Guest
             </Button>
           </CardContent>
         </form>

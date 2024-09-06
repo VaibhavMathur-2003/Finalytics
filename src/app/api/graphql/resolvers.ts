@@ -14,10 +14,7 @@ export const resolvers = {
   Mutation: {
     createUser: (_: any, { email, password, name }: { email: string; password: string; name?: string }) => 
       prisma.user.create({ data: { email, password, name } }),
-    updateUser: (_: any, { id, email, name }: { id: string; email?: string; name?: string }) => 
-      prisma.user.update({ where: { id }, data: { email, name } }),
-    deleteUser: (_: any, { id }: { id: string }) => 
-      prisma.user.delete({ where: { id } }),
+ 
 
     createWishlist: (_: any, { name, userId }: { name: string; userId: string }) => 
       prisma.wishlist.create({ data: { name, userId } }),
@@ -26,8 +23,7 @@ export const resolvers = {
     deleteWishlist: (_: any, { id }: { id: string }) => 
       prisma.wishlist.delete({ where: { id } }),
 
-    updateStock: (_: any, { id, name, quantity }: { id: string; name?: string; quantity?: number }) => 
-      prisma.stock.update({ where: { id }, data: { name, quantity } }),
+   
     deleteStock: (_: any, { id }: { id: string }) => 
       prisma.stock.delete({ where: { id } }),
 
