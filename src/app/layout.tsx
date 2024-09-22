@@ -63,7 +63,7 @@ export default async function RootLayout({
                 <span className="sr-only curosor-pointer">B&C</span>
               </Link>
 
-              <nav className=" items-center justify-center flex gap-4">
+              <nav className=" items-center justify-center flex gap-4 absolute right-0 left-0">
                 <Link
                   href="/wishlist"
                   className="font-medium flex font-semibold tracking-wide items-center text-sm transition-colors hover:underline hover:scale-110"
@@ -85,7 +85,7 @@ export default async function RootLayout({
                     </Link>
                   </div>
                 ) : (
-                  <div className="flex items-center space-x-4 justify-between rounded-lg  p-4">
+                  <div className="flex items-center justify-between rounded-lg  py-4">
                     <form
                       action={async () => {
                         "use server";
