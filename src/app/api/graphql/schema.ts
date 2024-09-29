@@ -36,7 +36,6 @@ export const typeDefs = gql`
     createUser(email: String!, password: String!, name: String): User!
 
     createWishlist(name: String!, userId: ID!): Wishlist!
-    updateWishlist(id: ID!, name: String): Wishlist!
     deleteWishlist(id: ID!): Wishlist
 
     

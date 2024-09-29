@@ -18,8 +18,6 @@ export const resolvers = {
 
     createWishlist: (_: any, { name, userId }: { name: string; userId: string }) => 
       prisma.wishlist.create({ data: { name, userId } }),
-    updateWishlist: (_: any, { id, name }: { id: string; name?: string }) => 
-      prisma.wishlist.update({ where: { id }, data: { name } }),
     deleteWishlist: (_: any, { id }: { id: string }) => 
       prisma.wishlist.delete({ where: { id } }),
 
