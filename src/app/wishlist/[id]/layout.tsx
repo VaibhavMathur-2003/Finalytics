@@ -12,18 +12,26 @@ type LayoutProps = {
 export default function Layout({ children, Areachart, Calendar, Piechart }: LayoutProps) {
   return (
     <StockProvider>
-      <div className="bg-gray-900 min-h-screen">
-    <div className="flex flex-col max-w-6xl mx-auto text-white p-4">
-      <h1 className="mt-20 mb-5 font-semibold text-3xl md:text-4xl font-serif">
+  <div className="bg-gray-900 min-h-screen text-white">
+    <div className="flex flex-col max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h1 className="my-8 font-serif text-3xl md:text-4xl font-semibold tracking-tight">
         Dashboard
       </h1>
-      {Calendar}
-        {Areachart}
-        {Piechart}
 
+      <section className="mb-8">
+        {Calendar}
+      </section>
+
+      <section className="mb-8">
+        {Areachart}
+      </section>
+
+      <section className="mb-8">
+        {Piechart}
+      </section>
     </div>
   </div>
-       
-    </StockProvider>
+</StockProvider>
+
   );
 }

@@ -35,77 +35,81 @@ export default async function RootLayout({
           newsreader.className
         )}
       >
-        <nav className="fixed inset-x-0 top-0 z-20 bg-white z-50 shadow-sm  border-b-2 border-solid border-black">
-          <div className="w-full max-w-7xl mx-auto px-4">
-            <div className="flex justify-between h-14 items-center">
-              <Link
-                href="/"
-                className="flex items-center cursor-pointer"
-                prefetch={false}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="cursor-pointer"
-                >
-                  <path
-                    d="m8 3 4 8 5-5 5 15H2L8 3z"
-                    className="cursor-pointer"
-                  />
-                </svg>
-                <span className="sr-only curosor-pointer">B&C</span>
-              </Link>
+        <nav className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm border-b border-black">
+  <div className="w-full max-w-7xl mx-auto px-4">
+    <div className="flex items-center justify-between h-16">
+      {/* Logo & Home Link */}
+      <Link
+        href="/"
+        className="flex items-center space-x-2"
+        prefetch={false}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-black"
+        >
+          <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
+        </svg>
+        <span className="sr-only">Finalytics Logo</span>
+      </Link>
 
-              <nav className=" items-center justify-center flex gap-4 absolute right-0 left-0">
-                <Link
-                  href="/wishlist"
-                  className="font-medium flex font-semibold tracking-wide items-center text-sm transition-colors hover:underline hover:scale-110"
-                  prefetch={false}
-                >
-                  Wishlist
-                </Link>
-              </nav>
-              <div>
-                {!user ? (
-                  <div className="flex items-center gap-4">
-                    <Link href="/signin">
-                      <Button aria-label="button" variant="outline" size="sm">
-                        Sign in
-                      </Button>
-                    </Link>
-                    <Link href="/signup">
-                      <Button aria-label="button" size="sm">Sign up</Button>
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-between rounded-lg  py-4">
-                    <form
-                      action={async () => {
-                        "use server";
-                        await signOut({ redirectTo: "/signin" });
-                      }}
-                      className="cursor-pointer"
-                    >
-                      <Button aria-label="button"
-                        type="submit"
-                        className="cursor-pointer hover:bg-white bg-white flex items-center justify-between"
-                      >
-                       <Image height={36} width={36} src="/assets/logout.webp" alt="SignOut" />
-                      </Button>
-                    </form>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </nav>
+      {/* Wishlist (Visible only on md and up) */}
+      <div className="hidden md:flex space-x-6">
+        <Link
+          href="/wishlist"
+          className="text-sm font-medium hover:underline transition"
+          prefetch={false}
+        >
+          Wishlist
+        </Link>
+      </div>
+
+      {/* Right Auth Section */}
+      <div className="flex items-center space-x-4">
+        {!user ? (
+          <>
+            <Link href="/signin">
+              <Button variant="outline" size="sm" aria-label="Sign in">
+                Sign in
+              </Button>
+            </Link>
+            <Link href="/signup">
+              <Button size="sm" aria-label="Sign up">
+                Sign up
+              </Button>
+            </Link>
+          </>
+        ) : (
+          <form
+            action={async () => {
+              "use server";
+              await signOut({ redirectTo: "/signin" });
+            }}
+          >
+            <Button type="submit" variant="ghost" aria-label="Sign out">
+              <Image
+                src="/assets/logout.webp"
+                alt="Sign out"
+                width={28}
+                height={28}
+                className="rounded-full"
+              />
+            </Button>
+          </form>
+        )}
+      </div>
+    </div>
+  </div>
+</nav>
+
         <ApolloWrapper>{children}</ApolloWrapper>
         <Analytics />
       </body>

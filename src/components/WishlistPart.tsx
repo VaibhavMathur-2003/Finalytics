@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "./ui/input";
 import { Calendar } from "@/components/ui/smallcalendar";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import * as React from "react";
 import stocksData from "../../public/assets/stocks.json";
 
@@ -49,7 +49,10 @@ export default function WishlistsPart({ userId }: { userId: string }) {
     }>;
   } | null>(null);
   const [selectedStock, setSelectedStock] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
   const [stockQuantity, setStockQuantity] = useState(1);
+  const [stockSearch, setStockSearch] = useState(""); // Add this state
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const { data: userData, refetch: refetchWishlists } = useQuery(
     GET_USER_WISHLISTS,
@@ -125,6 +128,12 @@ export default function WishlistsPart({ userId }: { userId: string }) {
       variables: { wishlistId, stockId },
     });
   };
+
+  // Filter stocks by search term
+  const filteredStocks = stocksData.filter(
+    (stock: { name: string }) =>
+      stock.name.toLowerCase().includes(stockSearch.toLowerCase())
+  );
 
   return (
     <div className="overflow-hidden bg-gray-900 h-screen">
@@ -262,35 +271,63 @@ export default function WishlistsPart({ userId }: { userId: string }) {
               <DrawerTitle>
                 {selectedWishlist ? selectedWishlist.name : "Select a Wishlist"}
               </DrawerTitle>
+              {/* Search input and custom dropdown */}
+              <div className="relative w-full mb-2">
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  value={stockSearch}
+                  onChange={(e) => {
+                    setStockSearch(e.target.value);
+                    setShowDropdown(e.target.value.length > 0);
+                  }}
+                  onFocus={() => setShowDropdown(stockSearch.length > 0)}
+                  placeholder="Search stocks by name"
+                  className="w-full p-2 border rounded"
+                  autoComplete="off"
+                />
+                {showDropdown && filteredStocks.length > 0 && (
+                  <ul
+                    className="absolute left-0 top-full bg-white border w-full rounded shadow max-h-48 overflow-y-auto"
+                    style={{ zIndex: 50 }} // <-- Add this inline style for higher z-index
+                  >
+                    {filteredStocks.map(
+                      (stock: { id: string; symbol: string; name: string }) => (
+                        <li
+                          key={stock.id}
+                          className={`p-2 cursor-pointer hover:bg-gray-200 ${
+                            selectedStock === stock.id ? "bg-gray-100" : ""
+                          }`}
+                          onMouseDown={() => {
+                            setSelectedStock(stock.id);
+                            setStockSearch(stock.name);
+                            setShowDropdown(false);
+                          }}
+                        >
+                          {stock.name}
+                        </li>
+                      )
+                    )}
+                  </ul>
+                )}
+              </div>
               <form
                 onSubmit={handleAddStock}
-                className="flex items-center justify-between w-full  mx-auto"
+                className="flex items-center justify-between w-full mx-auto"
               >
-                <select
-                  value={selectedStock}
-                  onChange={(e) => setSelectedStock(e.target.value)}
-                  className="w-full mr-4 z-20"
-                >
-                  {" "}
-                  <option value="">Select a Stock</option>
-                  {stocksData.map(
-                    (stock: { id: string; symbol: string; name: string }) => (
-                      <option key={stock.id} value={stock.id}>
-                        {stock.name}
-                      </option>
-                    )
-                  )}
-                </select>
+                {/* Hidden input to keep selectedStock value */}
+                <input type="hidden" value={selectedStock} />
                 <input
                   type="number"
                   value={stockQuantity}
                   onChange={(e) => setStockQuantity(Number(e.target.value))}
+                  className="w-full mr-4 border p-2"
                 />
-
                 <Button
                   aria-label="button"
                   type="submit"
                   className="bg-white text-black font-bold text-2xl p-4 rounded-xl border border-black shadow-lg hover:bg-gray-100 transition z-20"
+                  disabled={!selectedStock}
                 >
                   +
                 </Button>
