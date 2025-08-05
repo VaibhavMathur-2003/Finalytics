@@ -8,21 +8,24 @@ export default function Page() {
   const { filteredStockData } = useStockContext();
 
   return (
-    <div className="flex flex-col lg:flex-row justify-between items-center gap-5">
-      <PieCharts
-        profit={pieData(filteredStockData).positiveProfits}
-        loss={pieData(filteredStockData).negativeProfits}
-      />
-      <div className="flex flex-col md:flex-row gap-5">
-        <Topers
-          stockData={pieData(filteredStockData).positiveProfits.slice(0, 5)}
-          title="Gainers"
-        />
+    <div className="flex flex-col w-full justify-between items-center gap-5">
+      <div className="flex flex-col w-full md:flex-row gap-5">
         <Topers
           stockData={pieData(filteredStockData).negativeProfits.slice(-5)}
           title="Losers"
         />
       </div>
+      <div className="flex flex-col w-full md:flex-row gap-5">
+        <Topers
+          stockData={pieData(filteredStockData).positiveProfits.slice(0, 5)}
+          title="Gainers"
+        />
+      </div>
+      
+      {/* <PieCharts
+        profit={pieData(filteredStockData).positiveProfits}
+        loss={pieData(filteredStockData).negativeProfits}
+      /> */}
     </div>
   );
 }

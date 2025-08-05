@@ -27,14 +27,14 @@ const chartConfig = {
 
 export function PieCharts({profit, loss}:{profit: any, loss: any}) {
   return (
-    <Card className="flex flex-col bg-gray-900 border-none text-white">
+    <Card className="flex flex-col w-full bg-gray-900 border-none text-white">
       <CardHeader className="items-center pb-0">
         <CardTitle>Profit-Loss Distribution</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square h-96 w-full"
         >
           <PieChart>
             <ChartTooltip
@@ -51,12 +51,12 @@ export function PieCharts({profit, loss}:{profit: any, loss: any}) {
                 />
               }
             />
-            <Pie data={profit} dataKey="profit" outerRadius={60} />
+            <Pie data={profit} dataKey="profit" outerRadius={120} />
             <Pie
               data={loss}
               dataKey="profit"
-              innerRadius={70}
-              outerRadius={90}
+              innerRadius={140}
+              outerRadius={180}
             />
           </PieChart>
         </ChartContainer>

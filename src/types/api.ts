@@ -5,7 +5,7 @@ const BASE_URL = 'https://api.upstox.com/v2/historical-candle';
 function getDateRange(): { startDate: string; endDate: string } {
   const endDate = new Date();
   const startDate = new Date();
-  startDate.setMonth(startDate.getMonth() - 1);
+  startDate.setMonth(startDate.getMonth() - 3);
 
   return {
     startDate: startDate.toISOString().split('T')[0],

@@ -103,7 +103,7 @@ export function AreaCharts({ stockData }: { stockData: Candle[] }) {
     </Select>
   </CardHeader>
 
-  <CardContent className="px-6 pb-6 pt-4">
+  <CardContent className="lg:px-6 lg:pb-6 lg:pt-4 p-0">
     <ChartContainer
       config={chartConfig}
       className="aspect-[2/1] h-[250px] w-full"

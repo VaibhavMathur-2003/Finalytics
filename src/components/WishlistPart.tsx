@@ -149,7 +149,7 @@ export default function WishlistsPart({ userId }: { userId: string }) {
           />
         </div>
       </div>
-      <div className="md:flex hidden flex-col justify-center">
+      {/* <div className="md:flex hidden flex-col justify-center">
         <div className="absolute w-full flex justify-center ">
           <div className="absolute top-[50px] bg-white h-14 right-40 w-px"></div>
         </div>
@@ -163,7 +163,7 @@ export default function WishlistsPart({ userId }: { userId: string }) {
             alt=""
           />
         </div>
-      </div>
+      </div> */}
       <Drawer>
         <div className="bg-gray-900 mt-20 mx-auto p-8">
           <form
